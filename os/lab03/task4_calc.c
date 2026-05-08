@@ -12,7 +12,7 @@ int main(int argc, char *argv[] ){
     pid_t pids1 = fork();
     if(pids1 == 0){
         int sum = num1+num2;
-        printf("child 1 (sum):%d+%d=%d\n", sum , num1,num2);
+        printf("Child 1 (sum): %d + %d = %d\n", num1, num2 , sum);
         exit(sum);
 
     }else{
@@ -25,7 +25,7 @@ int main(int argc, char *argv[] ){
     pid_t pids2 = fork();
     if(pids2 == 0){
         int mul = num1*num2; 
-        printf("child 2 (mul):%d+%d=%d\n", mul , num1,num2);
+        printf("Child 2 (mul): %d * %d = %d\n", num1, num2 , mul);
         exit(mul);
 
     }
