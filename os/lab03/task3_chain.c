@@ -17,7 +17,7 @@ int main(int argc, char *argv[] ){
 
     }
     
-    printf("Process[%ld],my parent is [%ld]\n", getpid(), getppid());
+    printf("Process[%d],my parent is [%d]\n", getpid(), getppid());
 
     return 0;
 
