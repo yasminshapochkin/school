@@ -18,6 +18,7 @@ int main(int argc, char *argv[] ){
             exit(0);
         }
     }
+    sleep(5);
     system("ps -l");
     printf("Parent: Reviewing process state (look for <defunc>)\n");
     for(int i = 0 ; i<num ; i++){
