@@ -14,7 +14,7 @@ int main(int argc, char *argv[] ){
         execlp( argv[1] , argv[1]  , NULL );
     }
     wait(NULL);
-    printf("Parent: execution complete.");
+    printf("Parent: execution complete.\n");
 
     return 0;
 
