@@ -19,7 +19,7 @@ int main(int argc, char *argv[] ){
         }
     }
     system("ps -l");
-    printf("Parent: Reviewing process state (look for <defunc>)");
+    printf("Parent: Reviewing process state (look for <defunc>)\n");
     for(int i = 0 ; i<num ; i++){
         wait(NULL);
     }

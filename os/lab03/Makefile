@@ -20,4 +20,4 @@ task5_race: task5_race.c
 
 
 clean:
-		rm -f task1_fork task2_exec mtask3_chain task4_calc task5_race
+		rm -f task1_fork task2_exec task3_chain task4_calc task5_race
