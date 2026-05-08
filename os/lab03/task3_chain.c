@@ -15,6 +15,6 @@ int main(int argc, char* argv[]){
             break;
         }
     }
-    printf("Process [%ld],my parent is [%ld] .",getpid(),getppid());
+    printf("Process [%d],my parent is [%d] .\n",getpid(),getppid());
     return 0;
 }

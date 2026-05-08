@@ -12,7 +12,7 @@ int main(){
     }else{
         wait(NULL);
     }
-    printf("My PID is %ld:x =%d",getpid(),x);
+    printf("My PID is %d:x =%d",getpid(),x);
     return 0;
 
 };

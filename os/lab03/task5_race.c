@@ -14,12 +14,12 @@ int main(int argc, char *argv[] ){
         pid = fork();
         if(pid == 0 ){
             sleep(rand()%5); 
-            printf("child %%ld exiting", getpid());
+            printf("child %d exiting\n", getpid());
             exit(0);
         }
     }
     system("ps -l");
-    printf("Parent: Reviewing process state (look for <defunc>)", getpid());
+    printf("Parent: Reviewing process state (look for <defunc>)");
     for(int i = 0 ; i<num ; i++){
         wait(NULL);
     }

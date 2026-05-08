@@ -22,7 +22,7 @@ int main(int argc, char* argv[]){
         int status;
         waitpid(pids1,&status,0);
         int s=WEXITSTATUS(status);
-        printf("Parent: Child 1 result was %ld\n",s);
+        printf("Parent: Child 1 result was %d\n",s);
     }
     
 
