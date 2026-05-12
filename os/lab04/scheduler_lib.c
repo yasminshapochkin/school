@@ -18,21 +18,21 @@ void simulate_fcfs(Process proc[], int n){
         if (CLOCK >= proc[Process_index].arrival_time){
             index_RQ_push ++;
         }
-        if(CPUFree && Runnin_procces[index_RQ_pull].arrival_time <= T){
+        if(CPUFree && proc[index_RQ_pull].arrival_time <= T){
+           // Runnin_procces[index_RQ_pull].waiting_time = T;
             
-            Runnin_procces[index_RQ_pull].waiting_time = T;
-            Runnin_procces[index_RQ_pull].remaining_time--;
             CPUFree = false;
             runninNow = index_RQ_pull;
             index_RQ_pull ++;
             
         }
         else{
-            T +=  Runnin_procces[index_RQ_pull].remaining_time; 
-            Runnin_procces[index_RQ_pull].finish_time = T;
-            Runnin_procces[index_RQ_pull].is_completed = 1;
-           
-    
+            T +=  proc[index_RQ_pull].remaining_time; 
+            proc[index_RQ_pull].remaining_time = 0;
+            proc[index_RQ_pull].finish_time = T;
+            proc[index_RQ_pull].is_completed = 1;
+            proc[index_RQ_pull].waiting_time = T - proc[index_RQ_pull].arrival_time;
+
         }
 
     }
@@ -63,6 +63,8 @@ void simulate_sjf(Process proc[], int n){
         proc[RUNNING_PROCESS].remaining_time == 0;
         NUMBER_PROCESS_DONE++;
         proc[RUNNING_PROCESS].finish_time = T;
+        proc[index_RQ_pull].is_completed = 1;
+        proc[index_RQ_pull].waiting_time = T - proc[index_RQ_pull].arrival_time;
 
     }
 
@@ -70,14 +72,33 @@ void simulate_sjf(Process proc[], int n){
 }
 
 void simulate_rr(Process proc[], int n, int quantum){
-    int Process_Time_Chunk = 2;
-    int RQ[n];
+    int Process_Time_Chunk = 0;
+    int might_be_ready = 0;
+    int actually_running = 0;
     int index_RQ_pull = 0;
     int index_RQ_push = 0;
     int T = 0;
+    int NUMBER_PROCESS_DONE=0
+
+    while(NUMBER_PROCESS_DONE < n){
+        if(proc[might_be_ready].arrival_time > T){
+            actually_running = 0;
+        }
+        else{
+            actually_running = might_be_ready;
+            might_be_ready++;
+        }
+        for(actually_running ; actually_running < might_be_ready;actually_running++){
+            if(proc[actually_running].is_completed != 1 ){
+                Process_Time_Chunk = proc[actually_running].remaining_time > 2 ? 2:1;
+                proc[actually_running].remaining_time == max(proc[actually_running].remaining_time -2 , 0);
+                break;   
+             }
+        }
+        T += Process_Time_Chunk;
 
 
-    while(true){
+        
         
 
     }
@@ -86,6 +107,6 @@ void simulate_rr(Process proc[], int n, int quantum){
 }
 
 void simulate_srt(Process proc[], int n){
-
+    
 
 }
