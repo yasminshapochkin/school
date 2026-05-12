@@ -47,19 +47,19 @@ void simulate_sjf(Process proc[], int n){
     int NUMBER_PROCESS_DONE = 0;
     int RUNNING_PROCESS = 0 ;
 
-    while(true){
+    while(NUMBER_PROCESS_DONE < n){
+        
         int time_left = -1;
         for(int i = 0; i <n ; i ++){
             if (proc[i].arrival_time <= T && proc[i].is_completed != 0 ){
                 if (time_left < proc[i].remaining_time){
                     RUNNING_PROCESS = i;
                 }
-                
-                
-
             }
         }
-        proc[i].remaining_time--;
+        T += proc[i].remaining_time;
+        proc[i].remaining_time == 0;
+        NUMBER_PROCESS_DONE++;
 
     }
 
