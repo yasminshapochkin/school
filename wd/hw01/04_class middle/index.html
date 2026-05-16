@@ -1,0 +1,45 @@
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0">
+
+    <title>Web Dev 2026</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    
+<div class="menu">
+
+    <button class="menu-btn"
+        onclick="navigatePage(this, 'events.html')">
+        Page #1
+    </button>
+
+    <button class="menu-btn"
+    #this means its about the object we did the event on 
+        onclick="navigatePage(this, '../New folder/index.html')">
+        Page #2
+    </button>
+
+    <button class="menu-btn"
+        onclick="navigatePage(this, 'page3.html')">
+        Page #3 
+    </button>
+    
+
+    </div>
+    <iframe id="contentFrame" >
+        
+    </iframe>
+
+</body>
+<script src="index.js"></script>
+
+</html>
