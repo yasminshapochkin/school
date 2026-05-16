@@ -1,4 +1,12 @@
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("contentFrame").src = "home.html";
+  
+});
+
+
+
 function navigatePage(btnSelected, url) {
     //1)  )get all buttons that are in the menu
     // that have class of menu-btn
@@ -9,6 +17,7 @@ function navigatePage(btnSelected, url) {
         //2) remove the selected for eatch
         btn.classList.remove("selected");
     });
+    
     // 3) set selected on the spesific button the function recived 
     btnSelected.classList.add("selected");
     // 4) change the sorce url to the one the button 
