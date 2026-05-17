@@ -1,16 +1,18 @@
 body {
     margin: 0;
+    
     font-family: Arial;
 }
 
 .menu {
 
     display: flex;
-    flex-direction: row;
 
+    flex-direction: row;
+    
     gap: 10px;
 
-    padding: 10px;
+    padding: 20px;
 
     background-color: #333;
 }
@@ -47,9 +49,10 @@ body {
 }
 
 #contentFrame {
+    
 
     width: 100%;
-
+    
     height: calc(100vh - 60px); 
 
     border: none;

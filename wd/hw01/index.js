@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-function navigatePage(btnSelected, url) {
+function navigatePage(btnSelected, url ) {
     //1)  )get all buttons that are in the menu
     // that have class of menu-btn
     const buttons =
@@ -25,5 +25,7 @@ function navigatePage(btnSelected, url) {
     // getElementById is kinda equall to -> querySelector("#contentFrame")
     // it changes the html sorce DOES NOT CHANE TO A NEW PAGE!!!!
     document.getElementById("contentFrame").src = url;
+
+   
 }
 

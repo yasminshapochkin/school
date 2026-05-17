@@ -18,34 +18,44 @@
 <body>
     
 <div class="menu">
-
-    <button class="menu-btn"
-        onclick="navigatePage(this, 'contact/Contact.html')">
+    <div class="row " > 
+         <button class="menu-btn"
+          onclick="navigatePage(this, 'contact/Contact.html' )">
         Contact
     </button>
 
-    <button class="menu-btn"
+    </div>
+    
+    <div class="row" > 
+         <button class="menu-btn"
     #this means its about the object we did the event on 
-        onclick="navigatePage(this, 'music.html')">
-        music
+        onclick="navigatePage(this, 'music/music.html')">
+        Music
+    </button>
+    </div>
+   
+   
+    <div>
+        <button class="menu-btn"
+        onclick="navigatePage(this, 'grades/grades.html')">
+        Grades 
+    </button>
+    </div>
+    
+    <div>
+        <button class="menu-btn"
+        onclick="navigatePage(this, 'home.html')">
+        Home 
     </button>
 
-    <button class="menu-btn"
-        onclick="navigatePage(this, 'grades/grades.html')">
-        grades 
-    </button>
-    <button class="menu-btn"
-        onclick="navigatePage(this, 'home.html')">
-        home 
-    </button>
+    </div>
     
 
 </div>
 
 
-    <iframe id="contentFrame" >
+    <iframe id="contentFrame" style="background-color: black;">
        
-    
     </iframe>
 
 </body>

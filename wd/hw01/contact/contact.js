@@ -11,19 +11,22 @@ btn_send.addEventListener('click' , red_all);
 
 function red_all(){
     let aler = false;
-    // get all input boxes
-   // let input_b = document.querySelectorAll('#input_b');
+    
     // run in a loop
-    input_b.forEach(element => {
+    input_b.forEach(ipt => {
+        let val = ipt.value.trim();
        // see if input boxes have input inside them or not
-        if(element.value.trim() === ""){
-            element.style.border = "1px solid red";
+        if(val === ""){
+            ipt.style.border = "1px solid red";
             aler = true;
-            console.log("err?");
+            // LOG IS PRINTED IN THE DEVELOPER AREA 
+            console.log('ALERT');
     
         } 
         else {
-            element.style.border = ""; 
+            ipt.style.border = ""; 
+            console.log(val);
+            
         }
     });
     if(aler == true){

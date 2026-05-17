@@ -20,7 +20,7 @@ function clear_actions(){
         c.classList.toggle('dark-bold-card');
     } );
 
-    
+    show_cards();
 
 
 }
@@ -34,10 +34,12 @@ document.querySelector('#shw_g').addEventListener('mouseleave', hide_ghosts);
 
 let cols = document.querySelectorAll('.col');
 
+
 function show_cards() {
    
     cols.forEach(co => {
         co.style.display = '';
+         
     }); 
 }
 

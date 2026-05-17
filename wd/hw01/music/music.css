@@ -1,0 +1,18 @@
+
+#tbl{
+    background-color: #d3d3be83;
+    border-radius: 15px;
+    box-shadow: 0px 0px 40px -5px rgba(0, 0, 0, 01), inset 0px 0px 50px 5px rgba(67, 97, 102, 0.1) ;
+
+
+}
+
+tr:hover{
+    background-color: #6b4f3857;
+
+}
+
+th, td {
+    text-align: center;     
+    vertical-align: middle;  
+}

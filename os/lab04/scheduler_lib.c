@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+
 // is completed = 0 - not 
 // 1 - it is
 //proccece arr is sorted by arrival Time
@@ -19,6 +20,7 @@ void simulate_fcfs(Process proc[], int n){
     for(int i = 0 ; i <n ; i++){
         proc[i].remaining_time = proc[i].burst_time;
     }
+
     
     while (proc[n-1].is_completed == 0){
         // if the next process isnt ready time jump by 1
@@ -55,6 +57,7 @@ void simulate_sjf(Process proc[], int n){
     int T = 0;
     int NUMBER_PROCESS_DONE = 0;
     int RUNNING_PROCESS = 0 ;
+
     // reseting the remaining time 
     for(int i = 0 ; i <n ; i++){
         proc[i].remaining_time = proc[i].burst_time;
@@ -68,7 +71,6 @@ void simulate_sjf(Process proc[], int n){
                     RUNNING_PROCESS = i;
                     time_left = proc[i].remaining_time;
                 }
-
                 if (time_left  > proc[i].remaining_time){
                     RUNNING_PROCESS = i;
                     time_left = proc[i].remaining_time;
@@ -168,7 +170,7 @@ void simulate_rr(Process proc[], int n, int quantum){
 }
 
 void simulate_srt(Process proc[], int n){
-
+    
     int T = 0;
     int NUMBER_PROCESS_DONE = 0;
     int might_be_ready = 0;
