@@ -3,6 +3,11 @@
 #include <stdlib.h>
 void simulate_fcfs(Process proc[], int n)
 {
+    for (int i = 0; i < n; i++)
+    {
+        proc[i].remaining_time = proc[i].burst_time;
+    }
+
     int T = 0;
     int indexNextProc = 0;
     int runningProcess = -1;
@@ -24,6 +29,11 @@ void simulate_fcfs(Process proc[], int n)
 
 void simulate_sjf(Process proc[], int n)
 {
+    for (int i = 0; i < n; i++)
+    {
+        proc[i].remaining_time = proc[i].burst_time;
+    }
+
     int T = 0;
     int RQ[n];
     int i = 0;
@@ -70,9 +80,16 @@ void simulate_sjf(Process proc[], int n)
 
 void simulate_rr(Process proc[], int n, int quantum)
 {
+    for (int i = 0; i < n; i++)
+    {
+        proc[i].remaining_time = proc[i].burst_time;
+    }
 
     int T = 0;
     bool RQ[n];
+    for(int i=0;i<n;i++){
+        RQ[i]=false;
+    }
     int i = 0;
     int runningProcess = -1;
     int finished = 0;
@@ -127,15 +144,24 @@ void simulate_rr(Process proc[], int n, int quantum)
 
 void simulate_srt(Process proc[], int n)
 {
+    for (int i = 0; i < n; i++)
+    {
+        proc[i].remaining_time = proc[i].burst_time;
+    }
+
     int T = 0;
     bool RQ[n];
+    for(int i=0;i<n;i++){
+        RQ[i]=false;
+    }
     int i = 0;
     int nextProcess = -1;
     int finished = 0;
 
     while (finished < n)
     {
-        if (T < proc[i].arrival_time)
+        nextProcess=-1;
+        while ( i < n && T >= proc[i].arrival_time )
         {
             RQ[i] = true;
             i++;
@@ -152,19 +178,22 @@ void simulate_srt(Process proc[], int n)
             {
                 nextProcess = j;
             }
-            else if (proc[index].burst_time < proc[nextProcess].burst_time)
+            else if (proc[j].remaining_time < proc[nextProcess].remaining_time)
             {
-                nextProcess = index;
+                nextProcess = j;
             }
         }
+        proc[nextProcess].remaining_time--;
+        T++;
 
-
-        if(proc[nextProcess])       
-        finished++;
-        RQ[nextProcess] = false;
-        proc[nextProcess].is_completed = 1;
-        proc[nextProcess].finish_time = T;
-        proc[nextProcess].turnaround_time = proc[nextProcess].finish_time - proc[nextProcess].arrival_time;
-        proc[nextProcess].waiting_time = proc[nextProcess].turnaround_time - proc[nextProcess].burst_time;
+        if (proc[nextProcess].remaining_time == 0)
+        {
+            finished++;
+            RQ[nextProcess] = false;
+            proc[nextProcess].is_completed = 1;
+            proc[nextProcess].finish_time = T;
+            proc[nextProcess].turnaround_time = proc[nextProcess].finish_time - proc[nextProcess].arrival_time;
+            proc[nextProcess].waiting_time = proc[nextProcess].turnaround_time - proc[nextProcess].burst_time;
+        }
     }
 }
