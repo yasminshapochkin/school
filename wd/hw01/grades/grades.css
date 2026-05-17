@@ -1,8 +1,11 @@
+
+
 .shadows{
-    background-color: rgba(173, 173, 135, 0.418);
+    background-color: #F5EFD6;
     box-shadow: 0px 0px 50px 20px rgb(0, 0, 0,0.3);
     border-radius: 12px;
 }
+
 .dark-bold-card {
     background-color:rgb(141, 0, 0);
     color: rgb(255, 255, 255);

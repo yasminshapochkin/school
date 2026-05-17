@@ -7,6 +7,21 @@
 in the <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
+colors 
+    #190019
+    #2B124C
+    #522B5B
+    #854F6C
+    #DFB6B2
+    #FBE4DB
 
+    #FEA775
+    #D46059
+    #AA405B
+    #802B5B
+    #56194F
+
+    #FFA586
+    
 
 
