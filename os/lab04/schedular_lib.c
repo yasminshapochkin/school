@@ -92,7 +92,7 @@ void simulate_rr(Process proc[], int n, int quantum)
         for (int i = 0; i < n; i++)
         {
 
-            if (T >= proc[i].arrival_time && proc[i].is_completed == 0 && proc[i].remaining_time > 0 && RQ[i])
+            if (T >= proc[i].arrival_time)
             {
                 RQ[i] = true;
             }
@@ -121,7 +121,7 @@ void simulate_rr(Process proc[], int n, int quantum)
             runT = proc[runningProcess].remaining_time;
 
         proc[runningProcess].remaining_time -= runT;
-        T += runTime;
+        T += runT;
         if (proc[runningProcess].remaining_time == 0)
         {
             RQ[runningProcess] = false;
