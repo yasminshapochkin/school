@@ -26,8 +26,6 @@ function clear_actions(){
 }
 
 
-
-
 document.querySelector('#shw_g').addEventListener('mouseenter', ghost_cards);
 document.querySelector('#shw_g').addEventListener('mouseleave', hide_ghosts);
 

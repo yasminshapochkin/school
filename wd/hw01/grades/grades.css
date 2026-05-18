@@ -1,14 +1,13 @@
 
 
 .shadows{
-
-background: radial-gradient(circle,rgba(237, 238, 174, 0.95) 85%, rgba(178, 148, 233, 0.8) 100%);
+    background: radial-gradient(circle,rgba(237, 238, 174, 0.95) 85%, rgba(200, 183, 107, 0.8) 100%);
     box-shadow: 0px 0px 50px 20px rgb(0, 0, 0,0.3);
     border-radius: 12px;
 }
 
 .dark-bold-card {
-    background-color:rgb(141, 0, 0);
+    background: black;
     color: rgb(255, 255, 255);
     border: 3px solid rgb(71, 22, 22);
     font-weight: bold ;
@@ -16,7 +15,7 @@ background: radial-gradient(circle,rgba(237, 238, 174, 0.95) 85%, rgba(178, 148,
 
 
 .card:hover{
-    background-color: rgba(0, 0, 0, 0.253);
+    background: radial-gradient(circle,rgba(206, 174, 238, 0.95) 85%, rgba(116, 94, 190, 0.8) 100%);
 
 }
 
