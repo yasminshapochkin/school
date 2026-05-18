@@ -147,7 +147,7 @@ void simulate_rr(Process proc[], int n, int quantum){
             might_be_ready++;
         }
         //  calc if process needs 2 or 1 time chunks
-        Process_Time_Chunk = proc[actually_running].remaining_time >= 2 ? 2:1;
+        Process_Time_Chunk = proc[actually_running].remaining_time >= quantum ? quantum:proc[actually_running].remaining_time;
         // decrees from the process remaining work time
         proc[actually_running].remaining_time -=  Process_Time_Chunk;
 
