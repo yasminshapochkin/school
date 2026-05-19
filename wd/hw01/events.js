@@ -18,6 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function PageLoaded(){
     document.getElementById("title").innerHTML = "HTML is loaded!";
-    alert("page is loaded")
+    
 }
 
