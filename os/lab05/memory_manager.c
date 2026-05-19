@@ -7,7 +7,7 @@ Segment *init_memory(int total_size)
     memory->is_process = 1;
     memory->process_id = -1;
     memory->start_address = 0;
-    memory->size = 1024;
+    memory->size = total_size;
     memory->next = NULL;
     return memory;
 }
@@ -134,3 +134,31 @@ Segment* allocate_best_fit(Segment *head, int process_id, int size){
     return ret;
 }
 
+Segment* deallocate_mem(Segment *head, int process_id){
+    Segment* ret=head;
+    Segment* prev=NULL;
+    while(head){
+        if(head->process_id == process_id){
+            head->is_process =1;
+            head->process_id = -1;
+            break;
+        }
+        prev=head;
+        head=head->next;
+    }
+    if(!head){
+        fprinf(stderr, "Out of Memory.\n");
+            exit(1);
+    }
+    if(head->next && head->next->is_process ==1){
+        head->size=head->size + head->next->size;
+        head->next = head->next->next;
+    }
+
+    if(prev->is_process == 1){
+        prev->size = prev->size + head->size;
+        prev->next = head->next;
+    }
+    return ret;
+
+}
