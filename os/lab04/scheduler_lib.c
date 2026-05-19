@@ -102,9 +102,8 @@ void simulate_sjf(Process proc[], int n){
 void simulate_rr(Process proc[], int n, int quantum){
     
     int Process_Time_Chunk = 0;
-    int might_be_ready = 0;
-    int actually_running = 0;
-
+    int might_be_ready = 0 ;
+    int actually_running = 0 ;
     int T = 0;
     int NUMBER_PROCESS_DONE=0;
 
@@ -112,15 +111,15 @@ void simulate_rr(Process proc[], int n, int quantum){
     for(int i = 0 ; i < n ; i++){
         proc[i].remaining_time = proc[i].burst_time;
     }
-
     while(NUMBER_PROCESS_DONE < n ){
 
         // if who might be ready didnt arrive yet we go to the back of the RQ
-        if(proc[might_be_ready].arrival_time > T){
+        if(proc[might_be_ready].arrival_time > T || might_be_ready == n ){
             
             // we run over the RQ candidates 
             actually_running = -1;
             for(int i = 0 ; i < might_be_ready ; i++){
+              
                 
                 // if this process is done then it ignores this i 
                 if(proc[i].is_completed == 1 ){
@@ -136,6 +135,7 @@ void simulate_rr(Process proc[], int n, int quantum){
             }
             // if no process is ready rn so we will jump by 1
             if(actually_running == -1){
+               // if(NUMBER_PROCESS_DONE == n-1){break;}
                 T++;
                 continue;
             }
@@ -144,10 +144,12 @@ void simulate_rr(Process proc[], int n, int quantum){
         else{
             // if he is ready the we run him
             actually_running = might_be_ready;
-            might_be_ready++;
+            might_be_ready += might_be_ready == n ? 0 : 1; 
         }
-        //  calc if process needs 2 or 1 time chunks
-        Process_Time_Chunk = proc[actually_running].remaining_time >= quantum ? quantum:proc[actually_running].remaining_time;
+     
+        // calc if process needs 2 or 1 time chunks
+        Process_Time_Chunk = proc[actually_running].remaining_time >= quantum ? quantum : proc[actually_running].remaining_time;
+
         // decrees from the process remaining work time
         proc[actually_running].remaining_time -=  Process_Time_Chunk;
 
@@ -164,7 +166,9 @@ void simulate_rr(Process proc[], int n, int quantum){
             proc[actually_running].finish_time = T ;
             // update the waiting time
             proc[actually_running].waiting_time = T - proc[actually_running].arrival_time - proc[actually_running].burst_time;
+
         }
+
     }
        
 }
