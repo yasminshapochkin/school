@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# C / C++
+*.o
+*.out
+a.out
+
+# CLion / JetBrains
+.idea/
+cmake-build-*/
+
+# VS Code
+.vscode/
+
+# macOS hidden files
+.AppleDouble
+.LSOverride
+
+# Logs
+*.log
