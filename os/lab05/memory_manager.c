@@ -1,9 +1,17 @@
 #include "memory_manager.h"
 #include <stdlib.h>
 #include <stdio.h>
+const char *get_id(int i)
+{
+    static char id[10];
+    if (i == -1)
+        return "H";
+    sprintf(id, "P%d", i);
+    return id;
+}
 Segment *init_memory(int total_size)
 {
-    Segment *memory;
+    Segment *memory=(Segment*)(sizeof(Segment));
     memory->is_process = 1;
     memory->process_id = -1;
     memory->start_address = 0;
@@ -21,15 +29,6 @@ void print_memory(Segment *head)
     }
     printf("NULL\n");
 }
-
-char* get_id(int i)
-{
-    if (i == 1)
-        return 'H';
-    else
-        return 'P'+i;
-}
-
 void print_stats(Segment *head)
 {
     int totalMem = 0;
@@ -56,15 +55,15 @@ void print_stats(Segment *head)
     float precUM = (usedMem / totalMem) * 100;
     printf("--- Memory Statistics ---\n");
     printf("Total Memory: %d units\n", totalMem);
-    printf("Used Memory: %d units (%f%)\n", usedMem, precUM);
-    printf("Free Memory: %d units (%f%)\n", freeMem, precFM);
+    printf("Used Memory: %d units (%.2f%%)\n", usedMem, precUM);
+    printf("Free Memory: %d units (%.2f%%)\n", freeMem, precFM);
     printf("Number of Segments: %d (%d processes, %d holes)\n", numProc + numHoles, numProc, numHoles);
     printf("-------------------------");
 }
 
 Segment *allocate_first_fit(Segment *head, int process_id, int size)
 {
-    Segment* ret= head;
+    Segment *ret = head;
     while (head)
     {
         if (head->is_process == 1 && head->size >= size)
@@ -75,90 +74,103 @@ Segment *allocate_first_fit(Segment *head, int process_id, int size)
     }
     if (!head)
     {
-        fprinf(stderr, "Out of Memory.\n");
-            exit(1);
+        fprintf(stderr, "Out of Memory.\n");
+        exit(1);
     }
     if (head->size > size)
     {
-        Segment* temp=head->next;
-        Segment* newHole;
-        int totSize= head->size;
-        head->is_process=0;
-        head->process_id= process_id;
-        head->size= size;
+        Segment *temp = head->next;
+        Segment *newHole=(Segment*)(sizeof(Segment));
+        int totSize = head->size;
+        head->is_process = 0;
+        head->process_id = process_id;
+        head->size = size;
 
-        newHole->is_process=1;
-        newHole->process_id=-1;
+        newHole->is_process = 1;
+        newHole->process_id = -1;
         newHole->start_address = head->start_address + size;
         newHole->size = totSize - size;
         newHole->next = temp;
-    }else{
-        head->is_process=0;
-        head->process_id= process_id;
+    }
+    else
+    {
+        head->is_process = 0;
+        head->process_id = process_id;
     }
     return ret;
 }
 
-Segment* allocate_best_fit(Segment *head, int process_id, int size){
-    Segment* ret= head;
-    Segment* bstFit=head;
-    while(head){
-        if(head->is_process == 1 && head->size < bstFit->size && size <= head->size){
-            bstFit=head;
-        }
-        head= head->next;
-    }
-    if (!bstFit|| bstFit->is_process == 0);
+Segment *allocate_best_fit(Segment *head, int process_id, int size)
+{
+    Segment *ret = head;
+    Segment *bstFit = head;
+    while (head)
     {
-        fprinf(stderr, "Out of Memory.\n");
-            exit(1);
+        if (head->is_process == 1 && head->size < bstFit->size && size <= head->size)
+        {
+            bstFit = head;
+        }
+        head = head->next;
+    }
+    if (!bstFit || bstFit->is_process == 0)
+        ;
+    {
+        fprintf(stderr, "Out of Memory.\n");
+        exit(1);
     }
     if (bstFit->size > size)
     {
-        Segment* temp=bstFit->next;
-        Segment* newHole;
-        int totSize= bstFit->size;
-        bstFit->is_process=0;
-        bstFit->process_id= process_id;
-        bstFit->size= size;
+        Segment *temp = bstFit->next;
+        Segment *newHole= (Segment*)(sizeof(Segment));
+        int totSize = bstFit->size;
+        bstFit->is_process = 0;
+        bstFit->process_id = process_id;
+        bstFit->size = size;
 
         newHole->is_process = 1;
         newHole->process_id = -1;
         newHole->start_address = bstFit->start_address + size;
         newHole->size = totSize - size;
         newHole->next = temp;
-    }else{
+    }
+    else
+    {
         bstFit->is_process = 0;
         bstFit->process_id = process_id;
     }
     return ret;
 }
 
-Segment* deallocate_mem(Segment *head, int process_id){
-    Segment* ret=head;
-    Segment* prev=NULL;
-    while(head){
-        if(head->process_id == process_id){
-            head->is_process =1;
+Segment *deallocate_mem(Segment *head, int process_id)
+{
+    Segment *ret = head;
+    Segment *prev = NULL;
+    while (head)
+    {
+        if (head->process_id == process_id)
+        {
+            head->is_process = 1;
             head->process_id = -1;
             break;
         }
-        prev=head;
-        head=head->next;
+        prev = head;
+        head = head->next;
     }
-    if(!head){
-        fprinf(stderr, "Out of Memory.\n");
-            exit(1);
+    if (!head)
+    {
+        fprintf(stderr, "Out of Memory.\n");
+        exit(1);
     }
-    if(head->next && head->next->is_process ==1){
-        head->size=head->size + head->next->size;
+    if (head->next && head->next->is_process == 1)
+    {
+        head->size = head->size + head->next->size;
         head->next = head->next->next;
     }
 
-    if(prev->is_process == 1){
+    if (prev->is_process == 1)
+    {
         prev->size = prev->size + head->size;
         prev->next = head->next;
     }
     return ret;
-
 }

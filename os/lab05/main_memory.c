@@ -14,20 +14,20 @@ void process_command(char *line, Segment **head) {
         printf(">> Allocating %d units for Process %d (First Fit)...\n", size, id);
         
         /* TODO: YOUR CODE HERE - Task 2 */
-        allocate_first_fit(&head,id,size);
+        allocate_first_fit(*head,id,size);
         
         
     } else if (strcmp(cmd, "alloc_bf") == 0) {
         sscanf(line, "%*s %d %d", &id, &size);
         printf(">> Allocating %d units for Process %d (Best Fit)...\n", size, id);
-        allocate_best_fit(&head,id, size);
+        allocate_best_fit(*head,id, size);
         
         /* TODO: YOUR CODE HERE - Task 3 */
 
     } else if (strcmp(cmd, "free") == 0) {
         sscanf(line, "%*s %d", &id);
         printf(">> Freeing Process %d...\n", id);
-        deallocate_mem(&head,id);
+        deallocate_mem(*head,id);
         
         /* TODO: YOUR CODE HERE - Task 4 */
 
@@ -35,8 +35,8 @@ void process_command(char *line, Segment **head) {
 		
         /* TODO: YOUR CODE HERE - Task 1 */
 		/* Should print Memory & Memory Statistics */
-        print_memory(&head);
-        print_stats(&head);
+        print_memory(*head);
+        print_stats(*head);
 
     } else if (strcmp(cmd, "exit") == 0) {
         exit(0);
