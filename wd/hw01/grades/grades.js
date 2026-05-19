@@ -1,5 +1,24 @@
 
+
 let cards = document.querySelectorAll('.card');
+
+let cols = document.querySelectorAll('.col');
+
+
+
+function show_cards() {
+   
+    cols.forEach(co => {
+        co.style.display = '';
+         
+    }); 
+    cards.forEach(card => {
+        card.style.display = '';
+         
+    }); 
+
+}
+
 
 
 cards.forEach(card => {
@@ -9,18 +28,18 @@ cards.forEach(card => {
 });
 
 function double_c(c){
-    c.classList.toggle('dark-bold-card');
+    c.classList.toggle('selected-card');
 }
 
 
 function clear_actions(){
 
-    let dbc = document.querySelectorAll('.dark-bold-card');
+    let dbc = document.querySelectorAll('.selected-card');
     dbc.forEach(c =>{
-        c.classList.toggle('dark-bold-card');
+        c.classList.toggle('selected-card');
     } );
 
-    show_cards();
+    
 
 
 }
@@ -28,18 +47,6 @@ function clear_actions(){
 
 document.querySelector('#shw_g').addEventListener('mouseenter', ghost_cards);
 document.querySelector('#shw_g').addEventListener('mouseleave', hide_ghosts);
-
-
-let cols = document.querySelectorAll('.col');
-
-
-function show_cards() {
-   
-    cols.forEach(co => {
-        co.style.display = '';
-         
-    }); 
-}
 
 
 
@@ -62,4 +69,17 @@ function hide_ghosts() {
             co.style.pointerEvents = ''; 
         }
     });
+}
+
+function show_selected(){
+    cards.forEach(card=>{
+        if (!card.classList.contains("selected-card") && card.style.display === "") {
+            card.style.display = "none";
+        }
+
+    }
+
+    );
+
+
 }

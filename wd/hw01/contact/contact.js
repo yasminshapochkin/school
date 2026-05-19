@@ -1,4 +1,6 @@
 
+
+
 let btn_send = document.querySelector('#btn_send');
 let input_b = document.querySelectorAll('#input_b');
 

@@ -6,8 +6,8 @@
     border-radius: 12px;
 }
 
-.dark-bold-card {
-    background: black;
+.selected-card {
+    background: rgb(119, 108, 129);
     color: rgb(255, 255, 255);
     border: 3px solid rgb(71, 22, 22);
     font-weight: bold ;
@@ -16,11 +16,18 @@
 
 .card:hover{
     background: radial-gradient(circle,rgba(206, 174, 238, 0.95) 85%, rgba(116, 94, 190, 0.8) 100%);
+    transform: translateY(-10px);
+  
 
 }
 
 
 
-
+#bck_btn{
+    background-color: rgba(206, 174, 238, 1);
+    text-align: center;
+    padding: 10px;
+    border-radius: 9px;
+}
 
 
