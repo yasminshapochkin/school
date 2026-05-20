@@ -1,7 +1,7 @@
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("contentFrame").src = "home.html";
+    document.getElementById("contentFrame").src = "home\\home.html";
   
 });
 
