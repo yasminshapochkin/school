@@ -1,21 +1,11 @@
 
 
+document.addEventListener('DOMContentLoaded' , function(){
+    let btn_send = document.querySelector('#btn_send');
+    let input_b = document.querySelectorAll('.form-control');
 
-let btn_send = document.querySelector('#btn_send');
-let input_b = document.querySelectorAll('#input_b');
-
-
-
-btn_send.addEventListener('click' , red_all);
-
-// trim removes white spaces
-
-
-function red_all(){
-    let aler = false;
-    
-    // run in a loop
-    input_b.forEach(ipt => {
+    btn_send.addEventListener('click' , function(){
+        input_b.forEach(ipt => {
         let val = ipt.value.trim();
        // see if input boxes have input inside them or not
         if(val === ""){
@@ -31,8 +21,16 @@ function red_all(){
             
         }
     });
-    if(aler == true){
-        alert("ALERT");
-    }
-}
+    if(aler == true){ alert("ALERT");  }
+
+
+    });
+
+     
+
+});
+
+
+
+
 
