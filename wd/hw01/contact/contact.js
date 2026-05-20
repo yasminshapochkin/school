@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded' , function(){
         else {
             ipt.style.border = ""; 
             console.log(val);
+            aler = false;
             
         }
     });
