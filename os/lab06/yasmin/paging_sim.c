@@ -35,30 +35,31 @@ int translate_and_load(uint32_t logical_addr, PageTableEntry *page_table, int *n
 
     // getting the addr
     get_page_and_offset(logical_addr, &page_num, &offset);
-
+    page_table += page_num ;
     // if bit is valid then rreturn the physical addrs
-    if( page_table[page_num].valid == 1 ){
+    if( page_table->valid == 1 ){
         return calculate_physical_address(page_num , offset);
 
     }
     ///else (bit isnt valid) -> page fault
-    else if( page_table[page_num].valid == 0){
+    else if( page_table->valid == 0){
         // add to the next frame
-        if(next_free_frame < NUM_FRAMES){
+        if(*next_free_frame < NUM_FRAMES){
             // updating the array 
-            page_table[page_num].frame_number = next_free_frame;
-            page_table[page_num].valid = 1;
+
+            page_table->frame_number = *next_free_frame;
+            page_table->valid = 1;
             // moving the pointer
-            (*next_free_frame)++;
+            next_free_frame++;
             // return the physical adrr
-            return calculate_physical_address(next_free_frame , offset);
+            return calculate_physical_address(*next_free_frame , offset);
 
         }
-        else{ // if no more free space
-            return -1;
-        }
+       
         
     }
+    // if no more free space
+    return -1;
 
 
 }
