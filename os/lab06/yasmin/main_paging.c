@@ -35,20 +35,23 @@ void run_simulation(const char *filename) {
         /* TODO: YOUR CODE HERE (Task 4 integration)                 */
         /* 1. Extract page_num and offset using your get_page_and_offset */
         /* 2. Check if a page fault WILL happen to update total_page_faults */
+        // comper sent and recived 
         /* 3. Call translate_and_load to get the physical address       */
         /* ------------------------------------------------------------ */
         
+
+
         uint32_t page_num = 0, offset = 0;
         // המשתמש צריך לקרוא לפונקציה שלו פה:
-        // get_page_and_offset(logical_addr, &page_num, &offset);
+        get_page_and_offset(logical_addr, &page_num, &offset);
 
         int is_fault = 0; 
         // המשתמש צריך לבדוק תנאי תקפות פה לשם עדכון הסטטיסטיקה:
-        // if (page_table[page_num].valid == 0) { total_page_faults++; is_fault = 1; }
+        if (page_table[page_num].valid == 0) { total_page_faults++; is_fault = 1; }
 
         int physical_addr = 0;
         // המשתמש צריך לבצע את התרגום פה:
-        // physical_addr = translate_and_load(logical_addr, page_table, &next_free_frame);
+        physical_addr = translate_and_load(logical_addr, page_table, &next_free_frame);
 
 
         if (physical_addr == -1) {
