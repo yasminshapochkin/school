@@ -36,7 +36,7 @@ int translate_and_load(uint32_t logical_addr, PageTableEntry *page_table, int *n
         }
         page_table->frame_number = *next_free_frame;
         page_table->valid = 1;
-        (*next_free_frame)++;
+        next_free_frame++;
         return calculate_physical_address(page_table->frame_number,offset);
     }
 
