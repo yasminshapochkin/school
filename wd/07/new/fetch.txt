@@ -1,0 +1,648 @@
+MOVIES API - PRACTICE
+============================================================
+GOAL
+============================================================
+
+
+https://ghibliapi.vercel.app/films
+
+============================================================
+STEP 1 - CREATE PROJECT FILES
+============================================================
+
+Create a new folder:
+
+movies-demo
+
+Inside it create 2 files:
+
+1. index.html
+2. app.js
+
+============================================================
+STEP 2 - BASIC HTML
+============================================================
+
+Open index.html and paste:
+
+------------------------------------------------------------
+CODE - index.html
+------------------------------------------------------------
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Movies API Demo</title>
+</head>
+
+<body>
+
+    <h1>Movies API Demo</h1>
+
+    <button id="loadBtn">Load Movies</button>
+
+    <h2>Movies</h2>
+
+    <div id="moviesList"></div>
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
+
+------------------------------------------------------------
+
+Run the page with Live Server.
+
+============================================================
+STEP 3 - CHECK DOMContentLoaded
+============================================================
+
+Open app.js and paste:
+
+------------------------------------------------------------
+CODE - app.js
+------------------------------------------------------------
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    console.log("Page loaded");
+
+});
+
+------------------------------------------------------------
+
+Open browser DevTools Console.
+
+Expected result:
+
+Page loaded
+
+============================================================
+STEP 4 - CONNECT BUTTON CLICK
+============================================================
+
+Replace app.js with:
+
+------------------------------------------------------------
+CODE - app.js
+------------------------------------------------------------
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    console.log("Page loaded");
+
+    const loadBtn = document.getElementById("loadBtn");
+
+    loadBtn.addEventListener("click", function () {
+        console.log("Button clicked");
+    });
+
+});
+
+------------------------------------------------------------
+
+Click the button.
+
+Expected result:
+
+Button clicked
+
+============================================================
+STEP 5 - CREATE LOAD MOVIES FUNCTION
+============================================================
+
+Replace app.js with:
+
+------------------------------------------------------------
+CODE - app.js
+------------------------------------------------------------
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const loadBtn = document.getElementById("loadBtn");
+
+    loadBtn.addEventListener("click", loadMovies);
+
+});
+
+function loadMovies() {
+    console.log("Loading movies...");
+}
+
+------------------------------------------------------------
+
+Click the button.
+
+Expected result:
+
+Loading movies...
+
+============================================================
+STEP 6 - FIRST FETCH
+============================================================
+
+Replace loadMovies function with:
+
+------------------------------------------------------------
+CODE - app.js
+------------------------------------------------------------
+
+function loadMovies() {
+
+    fetch("https://ghibliapi.vercel.app/films")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (movies) {
+            console.log(movies);
+        });
+
+}
+
+------------------------------------------------------------
+
+Click the button.
+
+Expected result:
+You should see an array of movies in the console.
+
+============================================================
+STEP 7 - UNDERSTAND THE DATA
+============================================================
+
+Open one movie object in the console.
+
+Look for these properties:
+
+- title
+- description
+- director
+- producer
+- release_date
+- running_time
+- image
+
+Example:
+
+movie.title
+movie.director
+movie.release_date
+
+============================================================
+STEP 8 - DISPLAY MOVIE TITLES
+============================================================
+
+Replace loadMovies function with:
+
+------------------------------------------------------------
+CODE - app.js
+------------------------------------------------------------
+
+function loadMovies() {
+
+    fetch("https://ghibliapi.vercel.app/films")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (movies) {
+
+            const moviesList = document.getElementById("moviesList");
+
+            moviesList.innerHTML = "";
+
+            for (let i = 0; i < movies.length; i++) {
+
+                const movie = movies[i];
+
+                const div = document.createElement("div");
+
+                div.innerHTML = `
+                    <h3>${movie.title}</h3>
+                `;
+
+                moviesList.appendChild(div);
+            }
+
+        });
+
+}
+
+------------------------------------------------------------
+
+Expected result:
+All movie titles appear on the page.
+
+============================================================
+STEP 9 - DISPLAY MORE DETAILS
+============================================================
+
+Update div.innerHTML:
+
+------------------------------------------------------------
+CODE
+------------------------------------------------------------
+
+div.innerHTML = `
+    <h3>${movie.title}</h3>
+    <p><b>Director:</b> ${movie.director}</p>
+    <p><b>Release Year:</b> ${movie.release_date}</p>
+    <p><b>Running Time:</b> ${movie.running_time} minutes</p>
+`;
+
+------------------------------------------------------------
+
+============================================================
+STEP 10 - ADD CSS
+============================================================
+
+Inside index.html, inside <head>, add:
+
+------------------------------------------------------------
+CODE - index.html
+------------------------------------------------------------
+
+<style>
+    body {
+        font-family: Arial;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+
+    button {
+        padding: 10px 15px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    #moviesList {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .movie-card {
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 15px;
+        width: 250px;
+        border-radius: 8px;
+    }
+
+    .movie-card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+</style>
+
+------------------------------------------------------------
+
+============================================================
+STEP 11 - ADD CARD CLASS
+============================================================
+
+In app.js, after:
+
+const div = document.createElement("div");
+
+Add:
+
+------------------------------------------------------------
+CODE
+------------------------------------------------------------
+
+div.className = "movie-card";
+
+------------------------------------------------------------
+
+============================================================
+STEP 12 - ADD IMAGE
+============================================================
+
+Update div.innerHTML:
+
+------------------------------------------------------------
+CODE
+------------------------------------------------------------
+
+div.innerHTML = `
+    <img src="${movie.image}" alt="${movie.title}">
+    <h3>${movie.title}</h3>
+    <p><b>Director:</b> ${movie.director}</p>
+    <p><b>Release Year:</b> ${movie.release_date}</p>
+    <p><b>Running Time:</b> ${movie.running_time} minutes</p>
+`;
+
+------------------------------------------------------------
+
+============================================================
+STEP 13 - ADD SEARCH INPUT
+============================================================
+
+In index.html, before the button, add:
+
+------------------------------------------------------------
+CODE - index.html
+------------------------------------------------------------
+
+<input type="text" id="searchInput" placeholder="Search by movie title">
+
+------------------------------------------------------------
+
+Update CSS:
+
+------------------------------------------------------------
+CODE - index.html
+------------------------------------------------------------
+
+input {
+    padding: 10px;
+    width: 250px;
+    margin-right: 10px;
+}
+
+------------------------------------------------------------
+
+============================================================
+STEP 14 - FILTER BY TITLE
+============================================================
+
+Replace loadMovies function with:
+
+------------------------------------------------------------
+CODE - app.js
+------------------------------------------------------------
+
+function loadMovies() {
+
+    const searchInput = document.getElementById("searchInput");
+    const searchText = searchInput.value.toLowerCase();
+
+    fetch("https://ghibliapi.vercel.app/films")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (movies) {
+
+            const moviesList = document.getElementById("moviesList");
+
+            moviesList.innerHTML = "";
+
+            for (let i = 0; i < movies.length; i++) {
+
+                const movie = movies[i];
+
+                if (!movie.title.toLowerCase().includes(searchText)) {
+                    continue;
+                }
+
+                const div = document.createElement("div");
+                div.className = "movie-card";
+
+                div.innerHTML = `
+                    <img src="${movie.image}" alt="${movie.title}">
+                    <h3>${movie.title}</h3>
+                    <p><b>Director:</b> ${movie.director}</p>
+                    <p><b>Release Year:</b> ${movie.release_date}</p>
+                    <p><b>Running Time:</b> ${movie.running_time} minutes</p>
+                `;
+
+                moviesList.appendChild(div);
+            }
+
+        });
+
+}
+
+------------------------------------------------------------
+
+============================================================
+STEP 15 - ADD LOADING MESSAGE
+============================================================
+
+At the beginning of loadMovies, after searchText, add:
+
+------------------------------------------------------------
+CODE
+------------------------------------------------------------
+
+const moviesList = document.getElementById("moviesList");
+moviesList.innerHTML = "<p>Loading movies...</p>";
+
+------------------------------------------------------------
+
+Then remove this line from inside then(), because it already exists above:
+
+const moviesList = document.getElementById("moviesList");
+
+Keep only:
+
+moviesList.innerHTML = "";
+
+============================================================
+STEP 16 - ADD NO RESULTS MESSAGE
+============================================================
+
+Inside then(), before the loop:
+
+------------------------------------------------------------
+CODE
+------------------------------------------------------------
+
+let found = false;
+
+------------------------------------------------------------
+
+Inside the loop, after the filter and before creating the card:
+
+------------------------------------------------------------
+CODE
+------------------------------------------------------------
+
+found = true;
+
+------------------------------------------------------------
+
+After the loop:
+
+------------------------------------------------------------
+CODE
+------------------------------------------------------------
+
+if (found === false) {
+    moviesList.innerHTML = "<p>No movies found</p>";
+}
+
+------------------------------------------------------------
+
+============================================================
+STEP 17 - ADD ERROR HANDLING
+============================================================
+
+After the last then(), add catch:
+
+------------------------------------------------------------
+CODE
+------------------------------------------------------------
+
+.catch(function (error) {
+    console.log(error);
+    moviesList.innerHTML = "<p>Error loading movies</p>";
+});
+
+------------------------------------------------------------
+
+============================================================
+FINAL app.js
+============================================================
+
+------------------------------------------------------------
+CODE - app.js
+------------------------------------------------------------
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const loadBtn = document.getElementById("loadBtn");
+
+    loadBtn.addEventListener("click", loadMovies);
+
+});
+
+function loadMovies() {
+
+    const searchInput = document.getElementById("searchInput");
+    const searchText = searchInput.value.toLowerCase();
+
+    const moviesList = document.getElementById("moviesList");
+    moviesList.innerHTML = "<p>Loading movies...</p>";
+
+    fetch("https://ghibliapi.vercel.app/films")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (movies) {
+
+            moviesList.innerHTML = "";
+
+            let found = false;
+
+            for (let i = 0; i < movies.length; i++) {
+
+                const movie = movies[i];
+
+                if (!movie.title.toLowerCase().includes(searchText)) {
+                    continue;
+                }
+
+                found = true;
+
+                const div = document.createElement("div");
+                div.className = "movie-card";
+
+                div.innerHTML = `
+                    <img src="${movie.image}" alt="${movie.title}">
+                    <h3>${movie.title}</h3>
+                    <p><b>Director:</b> ${movie.director}</p>
+                    <p><b>Release Year:</b> ${movie.release_date}</p>
+                    <p><b>Running Time:</b> ${movie.running_time} minutes</p>
+                `;
+
+                moviesList.appendChild(div);
+            }
+
+            if (found === false) {
+                moviesList.innerHTML = "<p>No movies found</p>";
+            }
+
+        })
+        .catch(function (error) {
+            console.log(error);
+            moviesList.innerHTML = "<p>Error loading movies</p>";
+        });
+
+}
+
+------------------------------------------------------------
+
+============================================================
+FINAL index.html
+============================================================
+
+------------------------------------------------------------
+CODE - index.html
+------------------------------------------------------------
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Movies API Demo</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        input {
+            padding: 10px;
+            width: 250px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        #moviesList {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .movie-card {
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 15px;
+            width: 250px;
+            border-radius: 8px;
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Movies API Demo</h1>
+
+    <input type="text" id="searchInput" placeholder="Search by movie title">
+    <button id="loadBtn">Load Movies</button>
+
+    <h2>Movies</h2>
+
+    <div id="moviesList"></div>
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
+
+------------------------------------------------------------
+
+============================================================
+END OF CLASS PRACTICE
+============================================================

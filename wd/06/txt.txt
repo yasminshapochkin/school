@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>JavaScript Types Demo</title>
+
+    <style>
+        body{
+            font-family: Arial;
+            background:#f4f4f4;
+            padding:20px;
+        }
+
+        h1{
+            text-align:center;
+        }
+
+        .buttons{
+            display:flex;
+            flex-wrap:wrap;
+            gap:10px;
+            margin-bottom:20px;
+        }
+
+        button{
+            padding:10px 15px;
+            border:none;
+            background:#0078d7;
+            color:white;
+            cursor:pointer;
+            border-radius:5px;
+        }
+
+        button:hover{
+            background:#005fa3;
+        }
+
+        textarea{
+            width:100%;
+            height:400px;
+            padding:10px;
+            font-size:14px;
+            border:2px solid #ccc;
+            border-radius:5px;
+            resize:vertical;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>JavaScript Demo</h1>
+
+    <div class="buttons">
+        <button id="btnVariables">let / const</button>
+        <button id="btnTypes">Basic Types</button>
+        <button id="btnCompare">== VS ===</button>
+        <button id="btnStrings">String Operations</button>
+        <button id="btnArrays">Array Operations</button>
+        <button id="btnLoops">Loops</button>
+        <button id="btnMethods">Methods</button>
+        <button id="btnArrow">Arrow Functions</button>
+        <button id="btnObjects">JSON Objects</button>
+        <button id="btnClear">Clear</button>
+    </div>
+
+    <textarea id="output"></textarea>
+
+   
+</body>
+</html>
+
+-----
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const output = document.querySelector("#output");
+
+            function print(text){
+                output.value += text + "\n";
+                console.log(text);
+            }
+
+            // ===============================
+            // let / const
+            // ===============================
+
+            document.querySelector("#btnVariables")
+                .addEventListener("click", () => {
+
+                print("===== let / const =====");
+
+                let age = 25;
+                age = 30;
+
+                const country = "Israel";
+
+                print("Age: " + age);
+                print("Country: " + country);
+                print("");
+            });
+
+            // ===============================
+            // Basic Types
+            // ===============================
+
+            document.querySelector("#btnTypes")
+                .addEventListener("click", () => {
+
+                print("===== Basic Types =====");
+
+                let name = "David";
+                let number = 100;
+                let isOnline = true;
+                let emptyValue = null;
+                let data;
+
+                print(typeof name);
+                print(typeof number);
+                print(typeof isOnline);
+                print(typeof emptyValue);
+                print(typeof data);
+                print("");
+            });
+
+            // ===============================
+            // == VS ===
+            // ===============================
+
+            document.querySelector("#btnCompare")
+                .addEventListener("click", () => {
+
+                print("===== == VS === =====");
+
+                print("'5' == 5 : " + ('5' == 5));
+                print("'5' === 5 : " + ('5' === 5));
+
+                print("true == 1 : " + (true == 1));
+                print("true === 1 : " + (true === 1));
+
+                print("");
+            });
+
+            // ===============================
+            // String Operations
+            // ===============================
+
+            document.querySelector("#btnStrings")
+                .addEventListener("click", () => {
+
+                print("===== String Operations =====");
+
+                let first = "Hello";
+                let second = "World";
+
+                let full = first + " " + second;
+
+                print(full);
+
+                print(full.toUpperCase());
+
+                print("Length: " + full.length);
+
+                print("Contains 'World': " + full.includes("World"));
+
+                print("");
+            });
+
+            // ===============================
+            // Arrays
+            // ===============================
+
+            document.querySelector("#btnArrays")
+                .addEventListener("click", () => {
+
+                print("===== Array Operations =====");
+
+                let colors = ["Red", "Green", "Blue"];
+
+                print(colors.join(", "));
+
+                colors.push("Yellow");
+
+                print("After push:");
+                print(colors.join(", "));
+
+                colors.pop();
+
+                print("After pop:");
+                print(colors.join(", "));
+
+                print("Index 1: " + colors[1]);
+
+                print("");
+            });
+
+            // ===============================
+            // Loops
+            // ===============================
+
+            document.querySelector("#btnLoops")
+                .addEventListener("click", () => {
+
+                print("===== Loops =====");
+
+                print("FOR LOOP");
+
+                for(let i = 1; i <= 5; i++){
+                    print("i = " + i);
+                }
+
+                print("WHILE LOOP");
+
+                let counter = 1;
+
+                while(counter <= 3){
+                    print("counter = " + counter);
+                    counter++;
+                }
+
+                print("");
+            });
+
+            // ===============================
+            // Methods
+            // ===============================
+
+            document.querySelector("#btnMethods")
+                .addEventListener("click", () => {
+
+                print("===== Methods =====");
+
+                function add(a, b){
+                    return a + b;
+                }
+
+                function greet(name){
+                    return "Hello " + name;
+                }
+
+                print(add(5, 10));
+
+                print(greet("Gad"));
+
+                print("");
+            });
+
+            // ===============================
+            // Arrow Functions
+            // ===============================
+
+            document.querySelector("#btnArrow")
+                .addEventListener("click", () => {
+
+                print("===== Arrow Functions =====");
+
+                const multiply = (a, b) => {
+                    return a * b;
+                };
+
+                const sayHi = name => "Hi " + name;
+
+                print(multiply(4, 5));
+
+                print(sayHi("Student"));
+
+                print("");
+            });
+
+            // ===============================
+            // JSON Objects
+            // ===============================
+
+            document.querySelector("#btnObjects")
+                .addEventListener("click", () => {
+
+                print("===== JSON Objects =====");
+
+                const student = {
+                    id: 1,
+                    name: "Dana",
+                    grade: 95,
+                    isActive: true
+                };
+
+                print(student.name);
+                print(student.grade);
+
+                const jsonText = JSON.stringify(student);
+
+                print(jsonText);
+
+                const newObject = JSON.parse(jsonText);
+
+                print(newObject.name);
+
+                print("");
+            });
+
+            // ===============================
+            // Clear
+            // ===============================
+
+            document.querySelector("#btnClear")
+                .addEventListener("click", () => {
+
+                output.value = "";
+                console.clear();
+            });
+
+        });

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Students List</title>
+</head>
+<body>
+
+    <h1>Students List</h1>
+
+    <input type="text" id="studentName" placeholder="Student name">
+    <input type="number" id="studentGrade" placeholder="Grade">
+    <input type="text" id="studentCourse" placeholder="Course">
+    <button id="addBtn">Add Student</button>
+    <button id="dlBtn">Delete button</button>
+
+    <h2>Students</h2>
+    <div id="studentsList"></div>
+
+    <script>
+        //01 global veriable that holds the data
+        let students = []; 
+        //when page loaded
+        document.addEventListener("DOMContentLoaded", function () {
+            // check if there are any saved students in local storage
+            const savedStudents = localStorage.getItem("students");
+
+            // if Exsist - parse the JSON object ack to the array and assign it to the student array
+            if (savedStudents) {
+                students = JSON.parse(savedStudents);
+            }
+            // display data in the cards 
+            displayStudents();
+
+
+            // add new obj to student array to local storage
+            document.getElementById("addBtn").addEventListener("click", function () {
+                const nameInput = document.getElementById("studentName");
+                const gradeInput = document.getElementById("studentGrade");
+                const cousrInput = document.getElementById("studentCourse");
+
+                // builed student object according to user input
+                //the value of the keys are from the inputs 
+                const student = {
+                    name: nameInput.value,
+                    grade: gradeInput.value,
+                    course: cousrInput.value
+                };
+
+                // add to array 
+                students.push(student);
+                //save(override) to student array in local storage 
+                localStorage.setItem("students", JSON.stringify(students));
+                //display UI
+                displayStudents();
+
+                nameInput.value = "";
+                gradeInput.value = "";
+                cousrInput.value = "";
+            });
+            document.getElementById("dlBtn").addEventListener("click" , function(){
+                localStorage.clear();
+                students = [];
+                displayStudents();
+            });
+        });
+        
+        // func to read the data(global veriable) create new element into the page
+        function displayStudents() {
+
+            // container element 
+            const studentsList = document.getElementById("studentsList");
+
+            studentsList.innerHTML = "";
+
+            for (let i = 0; i < students.length; i++) {
+                
+                const student = students[i];
+                // from here hes doing create elemnt by student dada and add to page under student list
+
+                const card = document.createElement("div");
+
+                card.innerHTML = `
+                    <h3>${student.name}</h3>
+                    <p>Grade: ${student.grade}</p>
+                    <p>Course: ${student.course}</p>
+
+                `;
+
+                studentsList.appendChild(card);
+            
+            }
+            card.innerHTML += '<hr style="color blue;">';
+            // give first that u found  bigger than 90
+            let student = students.find(s=>s.grade>90);
+            // give all that bigger than 90
+            let allAbove90 = students.filter(s=>s.grade>90);
+
+        }
+    </script>
+
+</body>
+</html>
