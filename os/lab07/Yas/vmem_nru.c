@@ -30,7 +30,7 @@ void init_page_table(){
 
         page_table[i].frame_number = -1;
         page_table[i].valid = 0;
-        page_table[i].referenced = 0;
+        page_table[i].refrenced = 0;
         page_table[i].modified = 0;
     
     }
@@ -39,72 +39,86 @@ void init_page_table(){
 
 void resset_R_bit(){
     for (int i = 0; i < NUM_FRAMES; i++) {
-        frames[i]->referenced = 0;
+        if (frames[i] != NULL) {
+            frames[i]->refrenced = 0;
+        }
     }
 }
 
 
 int access_memory(uint32_t addr , char op){
     
-    
+    // for the hit / fault
+    int Status = 0;
     // get virtual memory 
     int v_page = addr / PAGE_SIZE ;
     int v_offset = addr % PAGE_SIZE;
+    int frame = -1;
 
-    // if valid = 1 
+    // if frame = 1 
     if (page_table[v_page].valid == 1){
-        
-        page_table[v_page].referenced = 1;
+        frame = page_table[v_page].frame_number;
+        page_table[v_page].refrenced = 1;
         // if op == w the modified 
         if ( op == 'W' ){ 
             page_table[v_page].modified = 1;
         }
         
     }
-    // for the hit / fault
-    int Status = 0; 
+     
 
     // if valid = 0 not in one of the frames call func
     else {
         TOTAL_PAGE_FAULTS++;
         Status = 1;
-        int frame = find_free_frame();
+        frame = find_free_frame();
+
+        if (frame == -1) {
+            printf("No frame found!\n");
+            exit(1);
+        }
         // if the frame has content in it 
         if(frames[frame] != NULL){
-
             free_frame(frame);
-
         }
-        insert_frame(frame , v_page );
 
+        insert_frame(frame , v_page );
     }
-    int nru_class = (page_table[v_page].modified*1) + (page_table[v_page].referenced*2);
+
+    int nru_class = (page_table[v_page].modified*1) + (page_table[v_page].refrenced*2);
      // for printing hit or miss
-    string H_F = ["HIT","FAULT"];
-    int p_addr = (frame*PAGE_SIZE) + v_offset;
-    printf("Addr:%d | Page: %d | Op: %c | Frame: %d | Status: %s | NRU_Class %d \n",
-            p_addr,      v_page,      op,   ,    frame,  H_F[Status]  ,nru_class); 
+   
+    int p_addr = ( frame * PAGE_SIZE) + v_offset;
+    printf("Addr:%d | Page: %d | Op: %c | Frame: %d | Status: ", p_addr , v_page,  op ,frame ); 
+    if(Status == 0 ){  printf("HIT");}
+    else{printf("FAULT");} 
+    printf(" | NRU_Class %d \n",nru_class);   
+
+    return p_addr;
+    
 }
 
 
 int find_free_frame(){
+
     int R = 0;
     int M = 0;
-    int index = 0;
+
+    // int index = 0;
     int frame = -1;
 
     for (int i = 0 ; i<NUM_FRAMES ; i++){
-
-        if(frames[i] == NULL || frames[i]->modified == M && frames[i]->referenced == R ){
+        printf("i=%d frame=%p\n", i, frames[i]);
+        if(frames[i] == NULL || (frames[i]->modified == M && frames[i]->refrenced == R) ){
             frame = i;
-            breake;
+            break;
         }
         // if finished loop 
         if(i ==  NUM_FRAMES -1){
             i = -1;
             // see if finished all groups
             if(R == 1 && M==1){
-                breake;
+                break;
             }
             // update bits
             if(M==0){
@@ -121,25 +135,28 @@ int find_free_frame(){
 
 
 
+
 void free_frame(int index){
-    int page_num = frame[index] - page_table ;
-    if(frame[index]->modified == 1){
+    int page_num = frames[index] - page_table ;
+    if(frames[index]->modified == 1){
         TOTAL_DISK_WRITES++;
         printf("Evicting dirty page %d \n" , page_num);
     }
-    frame[index]->valid = 0;
-    frame[index]->modified = 0;
-    frame[index]->frame_number = -1;
-    frame[index]->modified = 0;
+    frames[index]->valid = 0;
+    frames[index]->modified = 0;
+    frames[index]->frame_number = -1;
+    frames[index]->refrenced = 0;
+    frames[index] = NULL;
 }
 
 
 
+
 void insert_frame(int frame_index, int page_index){
-    frame[frame_index] = page_table[page_index];
-    frame[frame_index]->valid = 1;
-    frame[frame_index]->frame_number = frame_index;
-    frame[frame_index]->modified = 0;
-    frame[frame_index]->modified = 0;
+    frames[frame_index] = &page_table[page_index];
+    frames[frame_index]->valid = 1;
+    frames[frame_index]->frame_number = frame_index;
+    frames[frame_index]->modified = 0;
+    frames[frame_index]->refrenced = 0;
 }
 

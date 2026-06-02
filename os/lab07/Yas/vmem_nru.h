@@ -1,8 +1,10 @@
 #ifndef VMEM_NRU_H
 #define VMEM_NRU_H
 
-#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 
 #define PAGE_SIZE 4096
 #define NUM_PAGES 16
@@ -12,7 +14,7 @@
 
 typedef struct {
     int frame_number ; 
-    int vaild;
+    int valid;
     int refrenced;
     int modified;
 

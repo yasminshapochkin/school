@@ -1,15 +1,8 @@
 #include "vmem_nru.h"
-
-int main(int argc, char *argv[]) {
-
-    if (argc < 2) {
-        fprintf(stderr, "Usage: %s <addresses_file.txt>\n", argv[0]);
-        return 1;
-    }
-    
-    run_simulation(argv[1]);
-    return 0;
-}
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
 
 void run_simulation(const char *filename) {
     FILE *file = fopen(filename, "r");
@@ -17,11 +10,14 @@ void run_simulation(const char *filename) {
         perror("Error opening addresses file");
         exit(1);
     }
+    char line[50];
+    uint32_t vir_addr;
     int CLOCK_UPDATE = 10;
     int time = 0;
-    printf("CLOCK INTERRUPT: resetting R bits");
+    printf("CLOCK INTERRUPT: resetting R bits\n");
     init_page_table();
     init_frames();
+    
     while (fgets(line, sizeof(line), file)) {
 
         // see if time to reset thr R bit
@@ -51,4 +47,16 @@ void run_simulation(const char *filename) {
     printf("Total Accesses: %d | Total Faults: %d | Total Disk writes: %d \n" , time , faults ,diskW );
 
     
+}
+
+int main(int argc, char *argv[]) {
+    
+
+    if (argc < 2) {
+        fprintf(stderr, "Usage: %s <addresses_file.txt>\n", argv[0]);
+        return 1;
+    }
+    
+    run_simulation(argv[1]);
+    return 0;
 }
