@@ -55,14 +55,12 @@ int access_memory(uint32_t addr , char op){
     int v_offset = addr % PAGE_SIZE;
     int frame = -1;
 
-    // if frame = 1 
+    // if valid = 1 
     if (page_table[v_page].valid == 1){
         frame = page_table[v_page].frame_number;
         page_table[v_page].refrenced = 1;
-        // if op == w the modified 
-        if ( op == 'W' ){ 
-            page_table[v_page].modified = 1;
-        }
+        // if op == w then modified 
+        //if ( op == 'W' ){    page_table[v_page].modified = 1; }
         
     }
      
@@ -74,13 +72,11 @@ int access_memory(uint32_t addr , char op){
         frame = find_free_frame();
 
         if (frame == -1) {
-            printf("No frame found!\n");
+            printf("No frame found\n");
             exit(1);
         }
         // if the frame has content in it 
-        if(frames[frame] != NULL){
-            free_frame(frame);
-        }
+        free_frame(frame);
 
         insert_frame(frame , v_page );
     }
@@ -93,6 +89,9 @@ int access_memory(uint32_t addr , char op){
     if(Status == 0 ){  printf("HIT");}
     else{printf("FAULT");} 
     printf(" | NRU_Class %d \n",nru_class);   
+    if ( op == 'W' ){ 
+        frames[frame]->modified = 1;
+    }
 
     return p_addr;
 
@@ -142,8 +141,13 @@ int find_free_frame(){
 
 
 void free_frame(int index){
+    if (frames[index] == NULL) {
+        return;
+    }
     int page_num = frames[index] - page_table ;
+    //printf("%d \n" , frames[index]->modified);
     if(frames[index]->modified == 1){
+        //printf("modified found\n");
         TOTAL_DISK_WRITES++;
         printf("Evicting dirty page %d \n" , page_num);
     }
@@ -151,6 +155,7 @@ void free_frame(int index){
     frames[index]->modified = 0;
     frames[index]->frame_number = -1;
     frames[index]->refrenced = 0;
+
     frames[index] = NULL;
 }
 
@@ -162,5 +167,6 @@ void insert_frame(int frame_index, int page_index){
     frames[frame_index]->valid = 1;
     frames[frame_index]->frame_number = frame_index;
     frames[frame_index]->refrenced = 0;
+
 }
 
