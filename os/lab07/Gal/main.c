@@ -1,5 +1,5 @@
 #include "vmem_nru.h"
-
+#include <stdlib.h>
 void simulator(const char *filename)
 {
     FILE *file = fopen(filename, "r");
@@ -15,7 +15,7 @@ void simulator(const char *filename)
     char line[50];
     char *end;
 
-    printf("CLOCK INTERRUPT: Resetting R bits");
+    printf("CLOCK INTERRUPT: Resetting R bits\n");
     uint32_t logical_addr;
 
     while (fgets(line, sizeof(line), file))
@@ -44,7 +44,7 @@ void simulator(const char *filename)
     printf("Total Accesses: %d | Total Page Faults: %d | Total Disk Writting: %d\n",total_accesses,faults,modified);
 }
 
-int main(int argc, char *argv)
+int main(int argc, char *argv[])
 {
     if (argc < 2)
     {

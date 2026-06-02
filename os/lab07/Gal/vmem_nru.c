@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
+int faults=0;
+int modified=0;
 PageTableEntry page_table[NUM_PAGES];
 PageTableEntry *frames[NUM_FRAMES];
 
@@ -26,7 +26,6 @@ int access_memory(uint32_t addr, char op)
 {
     int vpage = addr / PAGE_SIZE;
     int offset = addr % PAGE_SIZE;
-    int fr=-1;
     int vbit = page_table[vpage].valid;
 
     if (vbit == 1)
@@ -36,21 +35,21 @@ int access_memory(uint32_t addr, char op)
             page_table[vpage].modified = 1;
     }
 
-    else if (vbit == 0) //Page faults
+    else if (vbit == 0) // Page faults
     {
         faults++;
-         NRU(vpage);
+        NRU(vpage,op);
     }
-    int pAddr=page_table[vpage].frame_number * PAGE_SIZE + offset;
-    printf("Addr: %d | Page: %d | Op: %c | Frame: %d | Status: %s | NRU_Class: %d\n",pAdd,vpage,op,fr,vbit == 1 ? "HIT" : "FAULT",(page_table[vpage].modified)+(page_table[vpage].referenced * 2));
+    int pAddr = page_table[vpage].frame_number * PAGE_SIZE + offset;
+    printf("Addr: %d | Page: %d | Op: %c | Frame: %d | Status: %s | NRU_Class: %d\n", pAddr, vpage, op, page_table[vpage].frame_number, vbit == 1 ? "HIT" : "FAULT", (page_table[vpage].modified) + (page_table[vpage].referenced * 2));
     return pAddr;
 }
 
-NRU(int pageNum)
+void NRU(int pageNum, char op)
 {
     // free a frame
     int frame = allocateFreeFrame();
-    if (frames[frame]);
+    if (frames[frame])
     {
         frames[frame]->frame_number = -1;
         frames[frame]->valid = 0;
@@ -58,13 +57,14 @@ NRU(int pageNum)
         if (frames[frame]->modified == 1)
         {
             int pageToEv = frames[frame] - page_table;
-            printf("Evicting dirty page %d", pageToEv);
+            printf("Evicting dirty page %d\n", pageToEv);
             frames[frame]->modified = 0;
             modified++;
         }
     }
     insertFrame(frame, pageNum);
-    return frame;
+    if(op =='W')
+        frames[frame]->modified= 1;
 }
 
 void insertFrame(int frameinx, int pageNum)
@@ -72,10 +72,13 @@ void insertFrame(int frameinx, int pageNum)
     frames[frameinx] = &page_table[pageNum];
     frames[frameinx]->frame_number = frameinx;
     frames[frameinx]->valid = 1;
+    frames[frameinx]->referenced=1;
 }
 
-void reset_R_bit(){
-    for (int i = 0; i < NUM_PAGES; i++) {
+void reset_R_bit()
+{
+    for (int i = 0; i < NUM_PAGES; i++)
+    {
         page_table[i].referenced = 0;
     }
 }
@@ -108,4 +111,5 @@ int allocateFreeFrame()
             }
         }
     }
+    exit (-1);
 }
