@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Students List</title>
+</head>
+<body>
+
+    <h1>Students List</h1>
+
+    <input type="text" id="studentName" placeholder="Student name">
+    <input type="number" id="studentGrade" placeholder="Grade">
+    <button id="addBtn">Add Student</button>
+
+    <h2>Students</h2>
+    <div id="studentsList"></div>
+
+    <script>
+        //01 global veriable that holds the data
+        let students = []; 
+        //when page loaded
+        document.addEventListener("DOMContentLoaded", function () {
+            // check if there are any saved students in local storage
+            const savedStudents = localStorage.getItem("students");
+
+            // if Exsist - parse the JSON object ack to the array and assign it to the student array
+            if (savedStudents) {
+                students = JSON.parse(savedStudents);
+            }
+            // display data in the cards 
+            displayStudents();
+
+
+            // add new obj to student array to local storage
+            document.getElementById("addBtn").addEventListener("click", function () {
+                const nameInput = document.getElementById("studentName");
+                const gradeInput = document.getElementById("studentGrade");
+                // builed student object according to user input
+                //the value of the keys are from the inputs 
+                const student = {
+                    name: nameInput.value,
+                    grade: gradeInput.value
+                };
+
+                // add to array 
+                students.push(student);
+                //save(override) to student array in local storage 
+                localStorage.setItem("students", JSON.stringify(students));
+                //display UI
+                displayStudents();
+
+                nameInput.value = "";
+                gradeInput.value = "";
+            });
+        });
+        // func to read the data(global veriable) create new element into the page
+        function displayStudents() {
+
+            // container element 
+            const studentsList = document.getElementById("studentsList");
+
+            studentsList.innerHTML = "";
+
+            for (let i = 0; i < students.length; i++) {
+                
+                const student = students[i];
+                // from here hes doing create elemnt by student dada and add to page under student list
+
+                const card = document.createElement("div");
+
+                card.innerHTML = `
+                    <h3>${student.name}</h3>
+                    <p>Grade: ${student.grade}</p>
+                `;
+
+                studentsList.appendChild(card);
+            }
+        }
+    </script>
+
+</body>
+</html>

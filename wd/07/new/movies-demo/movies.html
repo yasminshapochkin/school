@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Movies API Demo</title>
+    
+<style>
+    body {
+        font-family: Arial;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+
+    button {
+        padding: 10px 15px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    #moviesList {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .movie-card {
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 15px;
+        width: 250px;
+        border-radius: 8px;
+    }
+
+    .movie-card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+    input {
+    padding: 10px;
+    width: 250px;
+    margin-right: 10px;
+    }
+
+</style>
+</head>
+
+<body>
+
+    <h1>Movies API Demo</h1>
+
+    <button id="loadBtn">Load Movies</button>
+
+    <h2>Movies</h2>
+
+    <input type="text" id="searchInput" placeholder="Search by movie title">
+    
+
+    <div id="moviesList"></div>
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
