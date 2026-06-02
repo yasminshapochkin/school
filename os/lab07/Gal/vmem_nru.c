@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int faults=0;
-int modified=0;
+
 
 PageTableEntry page_table[NUM_PAGES];
 PageTableEntry *frames[NUM_FRAMES];

@@ -6,6 +6,10 @@
 #define NUM_FRAMES 4
 #include <stdio.h>
 #include <stdint.h>
+
+int faults=0;
+int modified=0;
+
 typedef struct PageTableEntry{
     int frame_number;
     int valid;
