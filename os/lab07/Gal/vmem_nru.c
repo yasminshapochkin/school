@@ -41,9 +41,9 @@ int access_memory(uint32_t addr, char op)
         faults++;
          NRU(vpage);
     }
-    printf("Addr: %d | Page: %d | Op: %c | Frame: %d | Status: %s | NRU_Class: %d\n",addr,vpage,op,fr,vbit == 1 ? "HIT" : "FAULT",(page_table[vpage].modified)+(page_table[vpage].referenced * 2));
-
-    return page_table[vpage].frame_number * PAGE_SIZE + offset;
+    int pAddr=page_table[vpage].frame_number * PAGE_SIZE + offset;
+    printf("Addr: %d | Page: %d | Op: %c | Frame: %d | Status: %s | NRU_Class: %d\n",pAdd,vpage,op,fr,vbit == 1 ? "HIT" : "FAULT",(page_table[vpage].modified)+(page_table[vpage].referenced * 2));
+    return pAddr;
 }
 
 NRU(int pageNum)
