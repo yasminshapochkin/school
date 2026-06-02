@@ -95,7 +95,7 @@ int access_memory(uint32_t addr , char op){
     printf(" | NRU_Class %d \n",nru_class);   
 
     return p_addr;
-    
+
 }
 
 
@@ -106,10 +106,15 @@ int find_free_frame(){
 
     // int index = 0;
     int frame = -1;
+    for (int i = 0 ; i<NUM_FRAMES ; i++){
+        if(frames[i] == NULL){
+            return i;
+        }
+    }
 
     for (int i = 0 ; i<NUM_FRAMES ; i++){
-        printf("i=%d frame=%p\n", i, frames[i]);
-        if(frames[i] == NULL || (frames[i]->modified == M && frames[i]->refrenced == R) ){
+        //printf("i=%d frame=%p\n", i, frames[i]);
+        if( (frames[i]->modified == M && frames[i]->refrenced == R) ){
             frame = i;
             break;
         }
@@ -156,7 +161,6 @@ void insert_frame(int frame_index, int page_index){
     frames[frame_index] = &page_table[page_index];
     frames[frame_index]->valid = 1;
     frames[frame_index]->frame_number = frame_index;
-    frames[frame_index]->modified = 0;
     frames[frame_index]->refrenced = 0;
 }
 
