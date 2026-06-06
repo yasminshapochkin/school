@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-int faults=0;
-int modified=0;
+int faults = 0;
+int modified = 0;
 PageTableEntry page_table[NUM_PAGES];
 PageTableEntry *frames[NUM_FRAMES];
 
@@ -19,6 +19,8 @@ void init_paga_table()
     {
         page_table[i].frame_number = -1;
         page_table[i].valid = 0;
+        page_table[i].modified = 0;
+        page_table[i].referenced = 0;
     }
 }
 
@@ -38,7 +40,7 @@ int access_memory(uint32_t addr, char op)
     else if (vbit == 0) // Page faults
     {
         faults++;
-        NRU(vpage,op);
+        NRU(vpage, op);
     }
     int pAddr = page_table[vpage].frame_number * PAGE_SIZE + offset;
     printf("Addr: %d | Page: %d | Op: %c | Frame: %d | Status: %s | NRU_Class: %d\n", pAddr, vpage, op, page_table[vpage].frame_number, vbit == 1 ? "HIT" : "FAULT", (page_table[vpage].modified) + (page_table[vpage].referenced * 2));
@@ -63,8 +65,8 @@ void NRU(int pageNum, char op)
         }
     }
     insertFrame(frame, pageNum);
-    if(op =='W')
-        frames[frame]->modified= 1;
+    if (op == 'W')
+        frames[frame]->modified = 1;
 }
 
 void insertFrame(int frameinx, int pageNum)
@@ -72,14 +74,15 @@ void insertFrame(int frameinx, int pageNum)
     frames[frameinx] = &page_table[pageNum];
     frames[frameinx]->frame_number = frameinx;
     frames[frameinx]->valid = 1;
-    frames[frameinx]->referenced=1;
+    frames[frameinx]->referenced = 1;
 }
 
 void reset_R_bit()
 {
     for (int i = 0; i < NUM_FRAMES; i++)
     {
-        frames[i]->referenced = 0;
+        if (frames[i])
+            frames[i]->referenced = 0;
     }
 }
 
@@ -88,17 +91,28 @@ int allocateFreeFrame()
 
     int R = 0;
     int M = 0;
+    int f = -1;
     for (int i = 0; i < NUM_FRAMES; i++)
     {
         if (frames[i] == NULL)
         {
             return i;
         }
+
         if (frames[i]->modified == M && frames[i]->referenced == R)
         {
-            return i;
+            int thispage = frames[i] - page_table;
+
+            if (f == -1)
+                f = i;
+            else
+            {
+                int prevpage = frames[f] - page_table;
+                if (prevpage > thispage)
+                    f = i;
+            }
         }
-        if (i == NUM_FRAMES - 1)
+        if (f == -1 && i == NUM_FRAMES - 1)
         {
             i = -1;
             if (M == 0)
@@ -111,5 +125,7 @@ int allocateFreeFrame()
             }
         }
     }
-    exit (-1);
+    if (f != -1)
+        return f;
+    exit(-1);
 }
