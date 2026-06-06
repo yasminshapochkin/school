@@ -112,14 +112,23 @@ int find_free_frame(){
         }
     }
 
-    for (int i = 0 ; i<NUM_FRAMES ; i++){
+    for (int i = 0 ; i < NUM_FRAMES ; i++){
         //printf("i=%d frame=%p\n", i, frames[i]);
         if( (frames[i]->modified == M && frames[i]->refrenced == R) ){
-            frame = i;
-            break;
+            if (frame == -1){
+                frame = i;
+            }
+            else if( frame != -1 && ( frame > frames[i] - page_table) ){
+                frame = i;
+            }
+            
         }
         // if finished loop 
         if(i ==  NUM_FRAMES -1){
+            // found a frame
+            if(frame != -1 ){
+                break;
+            }
             i = -1;
             // see if finished all groups
             if(R == 1 && M==1){
