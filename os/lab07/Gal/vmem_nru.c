@@ -77,9 +77,9 @@ void insertFrame(int frameinx, int pageNum)
 
 void reset_R_bit()
 {
-    for (int i = 0; i < NUM_PAGES; i++)
+    for (int i = 0; i < NUM_FRAMES; i++)
     {
-        page_table[i].referenced = 0;
+        frames[i]->referenced = 0;
     }
 }
 
