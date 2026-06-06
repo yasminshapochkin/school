@@ -38,10 +38,9 @@ void init_page_table(){
 }
 
 void resset_R_bit(){
-    for (int i = 0; i < NUM_FRAMES; i++) {
-        if (frames[i] != NULL) {
-            frames[i]->refrenced = 0;
-        }
+    for (int i = 0; i < NUM_PAGES; i++) {
+        page_table[i].refrenced = 0;
+        
     }
 }
 
@@ -81,17 +80,19 @@ int access_memory(uint32_t addr , char op){
         insert_frame(frame , v_page );
     }
 
-    int nru_class = (page_table[v_page].modified*1) + (page_table[v_page].refrenced*2);
-     // for printing hit or miss
+    if ( op == 'W' ){ 
+        frames[frame]->modified = 1;
+    } 
+
+    int nru_class = (page_table[v_page].modified) + (page_table[v_page].refrenced*2);
+    // for printing hit or miss
    
     int p_addr = ( frame * PAGE_SIZE) + v_offset;
     printf("Addr:%d | Page: %d | Op: %c | Frame: %d | Status: ", p_addr , v_page,  op ,frame ); 
     if(Status == 0 ){  printf("HIT");}
     else{printf("FAULT");} 
     printf(" | NRU_Class %d \n",nru_class);   
-    if ( op == 'W' ){ 
-        frames[frame]->modified = 1;
-    }
+    
 
     return p_addr;
 
@@ -166,7 +167,7 @@ void insert_frame(int frame_index, int page_index){
     frames[frame_index] = &page_table[page_index];
     frames[frame_index]->valid = 1;
     frames[frame_index]->frame_number = frame_index;
-    frames[frame_index]->refrenced = 0;
+    frames[frame_index]->refrenced = 1;
 
 }
 
