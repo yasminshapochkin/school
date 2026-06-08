@@ -2,6 +2,7 @@
 #define PAGING_SIM_H
 
 #include <stdint.h>
+#include <stdint.h>
 
 #define PAGE_SIZE 256
 #define NUM_PAGES 256
