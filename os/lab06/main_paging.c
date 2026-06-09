@@ -4,7 +4,7 @@
 #include <string.h>
 #include "paging_sim.h"
 
-void run_simulation(const char *filename) {
+void run_simulation(const char *filename) {}
     FILE *file = fopen(filename, "r");
     if (!file) {
         perror("Error opening addresses file");
