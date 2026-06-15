@@ -41,7 +41,7 @@ exam-client-app/
     ├── models/
     │   ├── Exam.js
     │   └── Question.js
-    ├── services/
+    ├── services/ - like if u would need gps that would be here
     │   └── ExamService.js
     ├── ui/
     │   └── ExamUI.js
