@@ -26,10 +26,10 @@ int run_fifo(int *request, int num_requests, int frame_count)
     int pf=0;
     for(int i=0; i<num_requests; i++){
         int page = request[i];
-        //printf("loop %d" , i);
+
 
         if(!in_frames(fifoSim.frames, page, frame_count)){
-           // printf("page fault %d",pf);
+
             pf++;
             if(fifoSim.size < frame_count){
                 fifoSim.frames[fifoSim.last] = page;
@@ -44,7 +44,7 @@ int run_fifo(int *request, int num_requests, int frame_count)
         }
     }
     free(fifoSim.frames);
-    printf("finished loop" );
+  
     return pf;
     
 }
@@ -74,7 +74,7 @@ int run_lru(int* request, int num_requests, int frame_count){
     tail = head;
 
     for(int i = 1; i< frame_count; i++){
-        printf("inisialize %d" , i);
+   
         node_LRU *temp = malloc(sizeof(node_LRU));
         if (!temp){   exit(-1); }
         temp->frame_number = i;
@@ -129,7 +129,7 @@ int run_lru(int* request, int num_requests, int frame_count){
     }
 
     tail = NULL;
-    printf("h1");
+
 
     return pf;
 }
