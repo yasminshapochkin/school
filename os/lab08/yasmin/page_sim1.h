@@ -1,5 +1,6 @@
 #ifndef PAGE_SIM_H
 #define PAGE_SIM_H
+#include <stdbool.h>
 
 #define MAX_VPAGE 100
 
@@ -19,8 +20,7 @@ typedef struct node_LRU
     struct node_LRU *prev;
 } node_LRU;
 
-struct node_LRU *head;
-struct node_LRU *tail;
+
 
 bool in_frames(int* frames,int page, int frame_count);
 

@@ -1,6 +1,9 @@
 #include "page_sim.h"
 #include <stdlib.h>
 
+struct node_LRU *head;
+struct node_LRU *tail;
+
 int run_fifo(int *request, int num_requests, int frame_count)
 {
     FIFOStruct fifoSim;
@@ -97,13 +100,19 @@ int run_lru(int* request, int num_requests, int frame_count){
             tail->next = NULL;
             search->next = head;
             search->prev = NULL;
-
-            
             head = search;
 
         }
+        else if(search->prev) {
+            search->prev->next = search->next;
+            if(search->next) search->next->prev = search->prev;
+            search->prev = NULL;
+            search->next = head;
+            if(head) head->prev = search;
+            head = search;
+        }
         // not
-        else{
+       /* else{
             // what if tail?
             search->prev->next = search->next;
             if(search->next){  search->next->prev = search->prev;  }
@@ -112,16 +121,16 @@ int run_lru(int* request, int num_requests, int frame_count){
             if(head) { head->prev = search; }
 
             head = search;
-        }
+        }*/
 
     }
     temp = head;
-    for(int i = 1; i< frame_count; i++){
+    while(head){
+        node_LRU *temp = head;
         head = head->next;
         free(temp);
-        temp = head;
-        
     }
+
 
     return pf;
 }
