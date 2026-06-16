@@ -1,8 +1,5 @@
-
 #ifndef MATRIX_BENCH_H
 #define MATRIX_BENCH_H
-
-
 
 
 /*  Structure for Thread Argumrnts  */
@@ -16,13 +13,17 @@ typedef struct {
     int **C;        // pointer to global matrix C
 } ThreadData;
 
+
+#define STACK_SIZE (1024 * 1024) // 1MB stack
+
+/*Prototypes for the 3 compation methods*/
 void compute_naive(int N, int **A , int **B, int **C);
 void compute_pthread(int N, int **A , int **B, int **C, int num_threads );
 void compute_clone(int N, int **A , int **B, int **C, int num_threads );
 
-
-void multiply_worker_pthread(void* arg);
-void multiply_worker_clone(void* arg);
+/* Prototypes for the worker function */
+void* multiply_worker_pthread(void* arg);
+int multiply_worker_clone(void* arg);
 
 
 
