@@ -87,31 +87,46 @@ int run_lru(int *request, int num_requests, int frame_count)
         node_LRU *search = in_fr_lru(head, page);
         if (search)
         {
-            node_LRU *prev = search->prev;
-            node_LRU *next = search->next;
-            prev->next = next;
-            if (next)
-                next->prev = prev;
-            else
-                tail = prev;
+            if (search != head)
+            {
+                node_LRU *prev = search->prev;
+                node_LRU *next = search->next;
+                prev->next = next;
+                if (next)
+                    next->prev = prev;
+                else
+                    tail = prev;
 
-            search->prev = NULL;
-            search->next = head;
-            head->prev = search;
-            head = search;
+                search->prev = NULL;
+                search->next = head;
+                head->prev = search;
+                head = search;
+            }
         }
         else
         {
             pf++;
             search = tail;
-            tail = tail->prev;
-            tail->next = NULL;
-            search->next = head;
-            search->prev = NULL;
-            search->page_num = page;
-            head->prev = search;
-            head = search;
+            if (tail->prev)
+            {
+                tail = tail->prev;
+                tail->next = NULL;
+                search->next = head;
+                search->prev = NULL;
+                search->page_num = page;
+                head->prev = search;
+                head = search;
+            }
+            else
+            {
+                search->page_num = page;
+            }
         }
+    }
+    while(head){
+        node_LRU* temp=head;
+        head=head->next;
+        free(temp);
     }
     return pf;
 }

@@ -24,6 +24,7 @@ node_LRU *head;
 node_LRU *tail;
 
 bool in_frames(int *frames, int page, int frame_count);
+node_LRU *in_fr_lru(node_LRU *frame, int page);
 
 int run_fifo(int *request, int num_requests, int frame_count);
 
