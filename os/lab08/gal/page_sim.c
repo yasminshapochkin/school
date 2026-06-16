@@ -16,23 +16,27 @@ int run_fifo(int *request, int num_requests, int frame_count)
     fifoSim.size = 0;
     fifoSim.first = 0;
     fifoSim.last = 0;
-    fifoSim.size = 0;
 
-    int pf=0;
-    for(int i=0; i<num_requests; i++){
+    int pf = 0;
+    for (int i = 0; i < num_requests; i++)
+    {
         int page = request[i];
 
-        if(!in_frames(fifoSim.frames, page, frame_count)){
+        if (!in_frames(fifoSim.frames, page, frame_count))
+        {
             pf++;
-            if(fifoSim.size < frame_count){
+            if (fifoSim.size < frame_count)
+            {
                 fifoSim.frames[fifoSim.last] = page;
                 fifoSim.last++;
-                fifoSim.last%=frame_count;
+                fifoSim.last %= frame_count;
                 fifoSim.size++;
-            }else{
+            }
+            else
+            {
                 fifoSim.frames[fifoSim.first] = page;
                 fifoSim.first++;
-                fifoSim.first%=frame_count;
+                fifoSim.first %= frame_count;
             }
         }
     }
@@ -50,4 +54,76 @@ bool in_frames(int *frames, int page, int frame_count)
     return false;
 }
 
+int run_lru(int *request, int num_requests, int frame_count)
+{
+    head = (node_LRU *)malloc(sizeof(node_LRU));
+    if (!head)
+        exit(-1);
 
+    head->frame_number = 0;
+    head->page_num = -1;
+    head->next = NULL;
+    head->prev = NULL;
+    tail = head;
+
+    for (int i = 1; i < frame_count; i++)
+    {
+
+        node_LRU *temp = malloc(sizeof(node_LRU));
+        if (!temp)
+            exit(-1);
+        temp->frame_number = i;
+        temp->next = NULL;
+        temp->page_num = -1;
+        temp->prev = tail;
+        tail->next = temp;
+        tail = temp;
+    }
+
+    int pf = 0;
+    for (int i = 0; i < num_requests; i++)
+    {
+        int page = request[i];
+        node_LRU *search = in_fr_lru(head, page);
+        if (search)
+        {
+            node_LRU *prev = search->prev;
+            node_LRU *next = search->next;
+            prev->next = next;
+            if (next)
+                next->prev = prev;
+            else
+                tail = prev;
+
+            search->prev = NULL;
+            search->next = head;
+            head->prev = search;
+            head = search;
+        }
+        else
+        {
+            pf++;
+            search = tail;
+            tail = tail->prev;
+            tail->next = NULL;
+            search->next = head;
+            search->prev = NULL;
+            search->page_num = page;
+            head->prev = search;
+            head = search;
+        }
+    }
+    return pf;
+}
+
+node_LRU *in_fr_lru(node_LRU *frame, int page)
+{
+    while (frame)
+    {
+        if (frame->page_num == page)
+            return frame;
+
+        frame = frame->next;
+    }
+    return NULL;
+}

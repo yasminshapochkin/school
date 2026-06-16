@@ -3,13 +3,14 @@
 
 #define MAX_VPAGE 100
 
+#include <stdbool.h>
 typedef struct FIFOStruct
 {
-    int* frames;
+    int *frames;
     int first;
     int last;
     int size;
-}FIFOStruct;
+} FIFOStruct;
 
 typedef struct node_LRU
 {
@@ -19,13 +20,13 @@ typedef struct node_LRU
     struct node_LRU *prev;
 } node_LRU;
 
-struct node_LRU *head;
-struct node_LRU *tail;
+node_LRU *head;
+node_LRU *tail;
 
-bool in_frames(int* frames,int page, int frame_count);
+bool in_frames(int *frames, int page, int frame_count);
 
-int run_fifo(int* request, int num_requests, int frame_count);
+int run_fifo(int *request, int num_requests, int frame_count);
 
-int run_lru(int* request, int num_requests, int frame_count);
+int run_lru(int *request, int num_requests, int frame_count);
 
 #endif
