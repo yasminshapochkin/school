@@ -2,20 +2,27 @@
 #ifndef BUFFER_SYNC_H
 #define BUFFER_SYNC_H
 
+#define BUFFER_SIZE 8
+
+
 typedef struct {
-    int flag[2];  
-    int turn;
+    volatile int flag[2];  
+    volatile int turn;
 } PetersonLock;
 
 
 typedef struct {
-    int* flag ;  
-    int head;
-    int tail;
-    int count;
+    int* buffer ;  
+    volatile int head;
+    volatile int tail;
+    volatile int count;
+    PetersonLock* head_lock;
+    PetersonLock* tail_lock;
 
 
 }CircularBuffer;
+
+// must use volatile for the sync 
 
 void peterson_init(PetersonLock *lock);
 void peterson_lock(PetersonLock *lock);
