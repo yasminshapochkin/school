@@ -9,8 +9,11 @@ typedef struct {
 
 
 typedef struct {
-    int flag[2];  
-    int turn;          
+    int* flag ;  
+    int head;
+    int tail;
+    int count;
+
 
 }CircularBuffer;
 
