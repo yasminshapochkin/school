@@ -2,7 +2,12 @@
 #ifndef BUFFER_SYNC_H
 #define BUFFER_SYNC_H
 
+typedef struct {
+    int flag[2];  
+    int end_row;    
+    int size;       
 
+} PetersonLock;
 
 void peterson_init(PetersonLock *lock);
 void peterson_lock(PetersonLock *lock);
