@@ -4,8 +4,8 @@
 #define BUFFER_SIZE 8
 
 typedef struct {
-    int flag[2]; 
-    int turn;
+    volatile int flag[2]; 
+    volatile int turn;
 } PetersonLock;
 
 typedef struct{
