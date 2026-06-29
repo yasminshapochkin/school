@@ -45,12 +45,13 @@ void enqueue_task(CircularBuffer *cb, int task_id, int thread_id)
             cb->head++;
             cb->head %= BUFFER_SIZE;
             cb->count++;
-            peterson_unlock(&cb->head_lock, thread_id);
             peterson_unlock(&cb->tail_lock, thread_id);
+            peterson_unlock(&cb->head_lock, thread_id);
+
             return;
         }
-        peterson_unlock(&cb->head_lock, thread_id);
         peterson_unlock(&cb->tail_lock, thread_id);
+        peterson_unlock(&cb->head_lock, thread_id);
     }
 }
 
@@ -71,11 +72,12 @@ int dequeue_task(CircularBuffer *cb, int thread_id)
             cb->tail++;
             cb->tail %= BUFFER_SIZE;
             cb->count--;
-            peterson_unlock(&cb->head_lock, thread_id);
             peterson_unlock(&cb->tail_lock, thread_id);
+            peterson_unlock(&cb->head_lock, thread_id);
+
             return val;
         }
-        peterson_unlock(&cb->head_lock, thread_id);
         peterson_unlock(&cb->tail_lock, thread_id);
+        peterson_unlock(&cb->head_lock, thread_id);
     }
 }
