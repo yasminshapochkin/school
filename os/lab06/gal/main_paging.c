@@ -40,15 +40,15 @@ void run_simulation(const char *filename) {
         
         uint32_t page_num = 0, offset = 0;
         // המשתמש צריך לקרוא לפונקציה שלו פה:
-        // get_page_and_offset(logical_addr, &page_num, &offset);
+        get_page_and_offset(logical_addr, &page_num, &offset);
 
         int is_fault = 0; 
         // המשתמש צריך לבדוק תנאי תקפות פה לשם עדכון הסטטיסטיקה:
-        // if (page_table[page_num].valid == 0) { total_page_faults++; is_fault = 1; }
+        if (page_table[page_num].valid == 0) { total_page_faults++; is_fault = 1; }
 
         int physical_addr = 0;
         // המשתמש צריך לבצע את התרגום פה:
-        // physical_addr = translate_and_load(logical_addr, page_table, &next_free_frame);
+        physical_addr = translate_and_load(logical_addr, page_table, &next_free_frame);
 
 
         if (physical_addr == -1) {
