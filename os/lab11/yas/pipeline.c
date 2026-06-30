@@ -69,6 +69,10 @@ void *thread_B_transformer(void *arg){
     }
 
 }
+
+//what does valid means?? 
+// the series numbers is a serieas that goes up by one 
+// knows that starts with 1 
 void *thread_C_verifier(void *arg){
 
     int val;
@@ -78,7 +82,7 @@ void *thread_C_verifier(void *arg){
         if (val == -1) {
             break;
         }
-        // check if the value is valid
+        // check if the value is valid ??????
         else if(){ 
             
         }
