@@ -1,6 +1,6 @@
 #include "pipeline.h"
 extern int total_elements_to_process;
-extern PipeLine pipeline;
+extern DataPipeline pipeline;
 
 void init_buffer(BoundedBuffer *buf){
     //initialize the buffer indices and semaphores
