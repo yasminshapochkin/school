@@ -73,6 +73,8 @@ void *thread_B_transformer(void *arg){
 //what does valid means?? 
 // the series numbers is a serieas that goes up by one 
 // knows that starts with 1 
+
+// returns numebr of failiars 
 void *thread_C_verifier(void *arg){
 
     int val;
