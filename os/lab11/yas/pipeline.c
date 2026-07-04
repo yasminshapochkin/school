@@ -76,21 +76,25 @@ void *thread_B_transformer(void *arg){
 
 // returns numebr of failiars 
 void *thread_C_verifier(void *arg){
-
+    int counter = 1;
+    int fails = 0;
     int val;
     while(1){
         read_buffer(&pipeline.AtB, &val);
-         // see if its the end
+        // see if its the end
         if (val == -1) {
             break;
         }
         // check if the value is valid ??????
-        else if(){ 
-            
+        else if(counter*2 != val){ 
+            fails++;
         }
 
-
+        counter++;
     }
+    int *result = malloc(sizeof(int));
+    *result = failures;
+    return result;
 
     /*
     int val;
