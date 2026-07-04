@@ -2,8 +2,8 @@ CC = gcc
 CFLAGS = -Wall -g
 
 
-task1_fork: main.c
-		$(CC) $(CFLAGS) main.c -o main pipeline.c
+main: main.c
+		$(CC) $(CFLAGS) main.c pipeline.c -o main -pthread
 
 clean:
-		rm -f main.c
+		rm -f main 

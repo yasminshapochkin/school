@@ -1,4 +1,6 @@
 #include "pipeline.h"
+#include <stdlib.h>
+#include <stdio.h>
 extern int total_elements_to_process;
 extern DataPipeline pipeline;
 
@@ -39,34 +41,37 @@ int read_buffer(BoundedBuffer *buf){
     sem_wait(&buf->mutex);
 
     // write into the 
-    buf->buffer[buf->head] = val;
+    int val = buf->buffer[buf->head];
     buf->head = (buf->head + 1) % BUFF_SIZE;
 
     // sem_post -> העלאה ושחרור
     sem_post(&buf->mutex);
     sem_post(&buf->empty);
+    return val;
 
 }
 
 void *thread_A_generator(void *arg){
     for (int i = 0; i < total_elements_to_process; i++) {
-        write_buffer(&pipeline.AtB, i);
+        write_buffer(&pipeline.buf1, i);
     }
-    write_buffer(&pipeline.AtB, -1); // signal end of data
+    write_buffer(&pipeline.buf1, -1); // signal end of data
+    return NULL;
 }
 
 void *thread_B_transformer(void *arg){
     int val;
     while(1){
-        read_buffer(&pipeline.AtB, &val);
+        val = read_buffer(&pipeline.buf1);
         if (val == -1) { // check for end signal
-            write_buffer(&pipeline.BtC, -1); // propagate end signal
+            write_buffer(&pipeline.buf2, -1); // propagate end signal
             break;
         }
         else{ // mutliply by 2 if isnt the end
-            write_buffer(&pipeline.BtC, val * 2); 
+            write_buffer(&pipeline.buf2, val * 2); 
         }
     }
+    return NULL;
 
 }
 
@@ -76,41 +81,25 @@ void *thread_B_transformer(void *arg){
 
 // returns numebr of failiars 
 void *thread_C_verifier(void *arg){
-    int counter = 1;
+    int counter = 0;
     int fails = 0;
     int val;
     while(1){
-        read_buffer(&pipeline.AtB, &val);
+        val = read_buffer(&pipeline.buf2);
         // see if its the end
         if (val == -1) {
             break;
         }
         // check if the value is valid ??????
         else if(counter*2 != val){ 
-            fails++;
+            __sync_fetch_and_add(&fails, 1);
         }
 
         counter++;
     }
     int *result = malloc(sizeof(int));
-    *result = failures;
+    *result = fails;
     return result;
 
-    /*
-    int val;
-    int failures = 0;
-    while(true){
-        read_buffer(&pipeline.BtC, &val);
-        if (val == -1) { // check for end signal
-            break;
-        }
-        else{ // check if the value is even
-            if (val % 2 != 0) {
-                failures++;
-            }
-        }
-    }
-    int *result = malloc(sizeof(int));
-    *result = failures;
-    return result;*/
+
 }

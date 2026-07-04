@@ -21,8 +21,8 @@ typedef struct
 
 typedef struct
 {
-    BoundedBuffer AtB;
-    BoundedBuffer BtC;
+    BoundedBuffer buf1;
+    BoundedBuffer buf2;
 
 } DataPipeline;
 
