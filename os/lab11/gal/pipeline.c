@@ -38,6 +38,7 @@ int read_buffer(BoundedBuffer *buf)
 
 void *thread_A_generator(void *arg)
 {
+    (void) arg; 
     for (int i = 1; i <= total_elements_to_process; i++)
     {
         write_buffer(&pipeline.buf1, i);
@@ -48,6 +49,7 @@ void *thread_A_generator(void *arg)
 
 void *thread_B_transformer(void *arg)
 {
+    (void) arg; 
     int res = 0;
     while ((res=read_buffer(&pipeline.buf1) )!= -1)
     {
@@ -59,6 +61,7 @@ void *thread_B_transformer(void *arg)
 
 void *thread_C_verifier(void *arg)
 {
+    (void) arg;   
     int *failures = malloc(sizeof(int));
     if (!failures)
     {
@@ -71,7 +74,7 @@ void *thread_C_verifier(void *arg)
     while ((res = read_buffer(&pipeline.buf2)) != -1)
     {
         if (res != expected)
-            (*failures)++;
+            __sync_fetch_and_add(failures,1);
         expected += 2;
     }
     return failures;
