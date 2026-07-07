@@ -1,5 +1,5 @@
 #include "pipeline.h"
-
+#include <unistd.h>
 extern SharedResource target_resource;
 void init_resource(SharedResource *sr)
 {
@@ -27,7 +27,7 @@ void *reader_worker(void *arg)
     sem_post(&target_resource.queue_block);
 
     printf("%d\n", target_resource.shared_database);
-    usleep(1000);
+
     sem_wait(&target_resource.mutex_r);
     target_resource.read_count--;
 
@@ -37,7 +37,7 @@ void *reader_worker(void *arg)
     }
 
     sem_post(&target_resource.mutex_r);
-
+    usleep(1000);
     return NULL;
 }
 
@@ -54,7 +54,7 @@ void *writer_worker(void *arg)
     sem_wait(&target_resource.resource_access);
 
     target_resource.shared_database++;
-    usleep(1000);
+
     sem_post(&target_resource.resource_access);
 
     sem_wait(&target_resource.mutex_w);
@@ -64,6 +64,6 @@ void *writer_worker(void *arg)
         sem_post(&target_resource.queue_block);
     }
     sem_post(&target_resource.mutex_w);
-
+    usleep(1000);
     return NULL;
 }

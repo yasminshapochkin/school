@@ -51,11 +51,16 @@ void *thread_B_transformer(void *arg)
 {
     (void) arg; 
     int res = 0;
-    while ((res=read_buffer(&pipeline.buf1) )!= -1)
+    while (1)
     {
+        res=read_buffer(&pipeline.buf1);
+        if(res == -1){
+            write_buffer(&pipeline.buf2, -1);
+            break;
+        }
         write_buffer(&pipeline.buf2, res * 2);
     }
-    write_buffer(&pipeline.buf2, -1);
+    
     return NULL;
 }
 
@@ -71,8 +76,13 @@ void *thread_C_verifier(void *arg)
     *failures = 0;
     int expected = 2;
     int res = 0;
-    while ((res = read_buffer(&pipeline.buf2)) != -1)
+    while (1)
     {
+        res = read_buffer(&pipeline.buf2);
+        if(res == -1){
+            break;
+        }
+
         if (res != expected)
             __sync_fetch_and_add(failures,1);
         expected += 2;
