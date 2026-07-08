@@ -15,55 +15,61 @@ void init_resource(SharedResource *sr)
 void *reader_worker(void *arg)
 {
     (void)arg;
-    sem_wait(&target_resource.queue_block);
-    sem_wait(&target_resource.mutex_r);
-    target_resource.read_count++;
-    if (target_resource.read_count == 1)
+    for (int i = 0; i < 3; i++)
     {
-        sem_wait(&target_resource.resource_access);
+        sem_wait(&target_resource.queue_block);
+        sem_wait(&target_resource.mutex_r);
+        target_resource.read_count++;
+        if (target_resource.read_count == 1)
+        {
+            sem_wait(&target_resource.resource_access);
+        }
+        sem_post(&target_resource.mutex_r);
+
+        sem_post(&target_resource.queue_block);
+
+        printf("%d\n", target_resource.shared_database);
+
+        sem_wait(&target_resource.mutex_r);
+        target_resource.read_count--;
+
+        if (target_resource.read_count == 0)
+        {
+            sem_post(&target_resource.resource_access);
+        }
+
+        sem_post(&target_resource.mutex_r);
+        usleep(1000);
     }
-    sem_post(&target_resource.mutex_r);
-
-    sem_post(&target_resource.queue_block);
-
-    printf("%d\n", target_resource.shared_database);
-
-    sem_wait(&target_resource.mutex_r);
-    target_resource.read_count--;
-
-    if (target_resource.read_count == 0)
-    {
-        sem_post(&target_resource.resource_access);
-    }
-
-    sem_post(&target_resource.mutex_r);
-    usleep(1000);
     return NULL;
 }
 
 void *writer_worker(void *arg)
 {
     (void)arg;
-    sem_wait(&target_resource.mutex_w);
-    target_resource.write_count++;
-    if (target_resource.write_count == 1)
+    for (int i = 0; i < 3; i++)
     {
-        sem_wait(&target_resource.queue_block);
+        sem_wait(&target_resource.mutex_w);
+        target_resource.write_count++;
+        if (target_resource.write_count == 1)
+        {
+            sem_wait(&target_resource.queue_block);
+        }
+        sem_post(&target_resource.mutex_w);
+        sem_wait(&target_resource.resource_access);
+
+        target_resource.shared_database++;
+
+        sem_post(&target_resource.resource_access);
+
+        sem_wait(&target_resource.mutex_w);
+        target_resource.write_count--;
+        if (target_resource.write_count == 0)
+        {
+            sem_post(&target_resource.queue_block);
+        }
+        sem_post(&target_resource.mutex_w);
+        usleep(1000);
     }
-    sem_post(&target_resource.mutex_w);
-    sem_wait(&target_resource.resource_access);
-
-    target_resource.shared_database++;
-
-    sem_post(&target_resource.resource_access);
-
-    sem_wait(&target_resource.mutex_w);
-    target_resource.write_count--;
-    if (target_resource.write_count == 0)
-    {
-        sem_post(&target_resource.queue_block);
-    }
-    sem_post(&target_resource.mutex_w);
-    usleep(1000);
     return NULL;
 }
