@@ -1,15 +1,18 @@
+
 /*Rectangle Area*/
 #include <iostream>
 #include <algorithm>
 int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2)
 {
-    //finding the shared area
+    //finding the shared area points
     int bigXLeft=std::max(ax1,bx1);
     int smallXRight=std::min(ax2,bx2);
     int bigYLeft = std::max(ay1,by1);
     int smallYRight= std::min(ay2,by2);
 
-    //(bigXLeft , bigYLeft )    (smallXRight , smallYRight)
+    /* (bigXLeft , bigYLeft )    (smallXRight , smallYRight)
+    check if the points are placed right ( bottom left, top right)
+    else, theres no shared area for the rectangles */
     int sharedArea;
     if( bigXLeft >= smallXRight || bigYLeft >= smallYRight)
         sharedArea= 0;
@@ -21,6 +24,6 @@ int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, i
     int aArea=( ax2-ax1 ) * ( ay2-ay1 );
     int bArea=( bx2-bx1 ) * ( by2-by1 );
     
-    return (aArea + bArea -sharedArea);
+    return (aArea + bArea - sharedArea);
 }
 
