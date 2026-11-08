@@ -1,10 +1,8 @@
 class Solution {
 public:
-
 #include <vector>
 #include <stack>
 #include <algorithm>
-
 int largestRectangleArea(std::vector<int>& heights) {
 
     int size = heights.size();
@@ -13,10 +11,10 @@ int largestRectangleArea(std::vector<int>& heights) {
     std::stack<int> Stack;
     // left
     for(int i = 0; i < size ; i++){
-        while(!(Stack.empty()) &&  heights[Stack.top()]> heights[i]){
+        while(!(Stack.empty()) &&  heights[Stack.top()]>= heights[i]){
             Stack.pop();
         }
-        Result_Left[i] = Stack.empty() ? 0 : Stack.top();
+        Result_Left[i] = Stack.empty() ? 0 : Stack.top()+1;
         Stack.push(i);
     }
     
@@ -24,7 +22,7 @@ int largestRectangleArea(std::vector<int>& heights) {
     std::vector<int> Result_Right(size);
     // right
     for(int i = size-1; i >= 0 ; i--){
-        while(!(Stack.empty()) && heights[Stack.top()] > heights[i]){
+        while(!(Stack.empty()) && heights[Stack.top()] >= heights[i]){
             Stack.pop();
         }
         Result_Right[i] = Stack.empty() ? (size-1) : (Stack.top()-1);
@@ -32,11 +30,8 @@ int largestRectangleArea(std::vector<int>& heights) {
     }
     int result = 0;
     for(int i = 0; i < size ; i++){
-        result = std::max(result, heights[i]*(Result_Right[i]-Result_Left[i]) );
+        result = std::max(result, heights[i]*(Result_Right[i]-Result_Left[i]+1) );
     }
     return result;
-}
-
-
-
+    }
 };
