@@ -64,7 +64,7 @@ class _CalcPageState extends State<CalcPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Flutter Calc Example'),
-        backgroundColor: Colors.blue,
+        backgroundColor: const Color.fromARGB(255, 219, 116, 243),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
