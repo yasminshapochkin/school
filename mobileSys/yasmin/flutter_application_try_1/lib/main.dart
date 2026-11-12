@@ -26,31 +26,22 @@ class CalcPage extends StatefulWidget {
 
 class _CalcPageState extends State<CalcPage> {
   // Controllers for reading text fields
-  final TextEditingController value1Controller =
-      TextEditingController();
-  final TextEditingController value2Controller =
-      TextEditingController();
+  final TextEditingController value1Controller = TextEditingController();
+  final TextEditingController value2Controller = TextEditingController();
 
   // Result variable
   String result = '';
 
   // Function for concatenating two values
-
   void calculate() {
-  double? num1 =
-      double.tryParse(value1Controller.text);
-  double? num2 =
-      double.tryParse(value2Controller.text);
-  String value1 = value1Controller.text;
-  String value2 = value2Controller.text;
-  setState(() {
-    if (num1 == null || num2 == null) {
+    String value1 = value1Controller.text;
+    String value2 = value2Controller.text;
+    setState(() {
       result = value1 + value2;
-    } else {
-      result = (num1 + num2).toString();
-    }
-  });
-}
+    });
+  }
+
+
 
   @override
   void dispose() {
@@ -59,12 +50,33 @@ class _CalcPageState extends State<CalcPage> {
     super.dispose();
   }
 
+  void clear() {
+    setState(() {
+      value1Controller.clear();
+      value2Controller.clear();
+      result = '';
+    });
+  }
+
+  void add() {
+    setState(() {
+      double? num1 = double.tryParse(value1Controller.text);
+      double? num2 = double.tryParse(value2Controller.text);
+
+      if (num1 == null || num2 == null) {
+        result = 'Invalid input';
+      } else {
+        result = (num1 + num2).toString();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Flutter Calc Example'),
-        backgroundColor: const Color.fromARGB(255, 219, 116, 243),
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -92,10 +104,20 @@ class _CalcPageState extends State<CalcPage> {
             const SizedBox(height: 20),
 
             // Calc Button
+            
             ElevatedButton(
               onPressed: calculate,
-              child: const Text('Calc'),
+              child: const Text('concat'),
             ),
+            
+ElevatedButton(
+  onPressed: clear,
+  child: const Text('Clear'),
+),
+ElevatedButton(
+  onPressed: add,
+  child: const Text('Add'),
+),
             const SizedBox(height: 30),
 
             // Result
